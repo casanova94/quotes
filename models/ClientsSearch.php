@@ -25,6 +25,21 @@ class ClientsSearch extends Clients
     /**
      * {@inheritdoc}
      */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Nombre',
+            'email' => 'Correo Electrónico',
+            'phone' => 'Teléfono',
+            'address' => 'Dirección',
+            'created_at' => 'Fecha de Creación',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
@@ -43,10 +58,18 @@ class ClientsSearch extends Clients
     {
         $query = Clients::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'id',
+                    'name',
+                    'email',
+                    'phone',
+                    'address',
+                    'created_at',
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);

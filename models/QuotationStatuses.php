@@ -45,8 +45,8 @@ class QuotationStatuses extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'color_code' => 'Color Code',
+            'name' => 'Nombre',
+            'color_code' => 'Código de Color',
         ];
     }
 

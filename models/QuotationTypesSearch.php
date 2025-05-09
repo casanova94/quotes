@@ -25,6 +25,18 @@ class QuotationTypesSearch extends QuotationTypes
     /**
      * {@inheritdoc}
      */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Nombre',
+            'description' => 'Descripción',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
@@ -43,10 +55,15 @@ class QuotationTypesSearch extends QuotationTypes
     {
         $query = QuotationTypes::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'id',
+                    'name',
+                    'description',
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);

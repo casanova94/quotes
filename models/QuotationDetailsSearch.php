@@ -19,6 +19,24 @@ class QuotationDetailsSearch extends QuotationDetails
         return [
             [['id', 'quotation_id', 'service_id', 'quantity'], 'integer'],
             [['unit_price', 'subtotal'], 'number'],
+            [['quotationName', 'serviceName'], 'safe'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'quotation_id' => 'Cotización',
+            'service_id' => 'Servicio',
+            'quantity' => 'Cantidad',
+            'unit_price' => 'Precio Unitario',
+            'subtotal' => 'Subtotal',
+            'quotationName' => 'Cotización',
+            'serviceName' => 'Servicio',
         ];
     }
 
@@ -41,12 +59,27 @@ class QuotationDetailsSearch extends QuotationDetails
      */
     public function search($params, $formName = null)
     {
-        $query = QuotationDetails::find();
-
-        // add conditions that should always apply here
+        $query = QuotationDetails::find()
+            ->joinWith(['quotation', 'service']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'id',
+                    'quotationName' => [
+                        'asc' => ['quotations.id' => SORT_ASC],
+                        'desc' => ['quotations.id' => SORT_DESC],
+                    ],
+                    'serviceName' => [
+                        'asc' => ['services.name' => SORT_ASC],
+                        'desc' => ['services.name' => SORT_DESC],
+                    ],
+                    'quantity',
+                    'unit_price',
+                    'subtotal',
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);
@@ -57,15 +90,16 @@ class QuotationDetailsSearch extends QuotationDetails
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'quotation_id' => $this->quotation_id,
-            'service_id' => $this->service_id,
-            'quantity' => $this->quantity,
-            'unit_price' => $this->unit_price,
-            'subtotal' => $this->subtotal,
+            'quotation_details.id' => $this->id,
+            'quotation_details.quotation_id' => $this->quotation_id,
+            'quotation_details.service_id' => $this->service_id,
+            'quotation_details.quantity' => $this->quantity,
+            'quotation_details.unit_price' => $this->unit_price,
+            'quotation_details.subtotal' => $this->subtotal,
         ]);
+
+        $query->andFilterWhere(['like', 'services.name', $this->serviceName]);
 
         return $dataProvider;
     }

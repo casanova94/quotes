@@ -18,8 +18,23 @@ class ServicesSearch extends Services
     {
         return [
             [['id', 'quotation_type_id'], 'integer'],
-            [['name', 'unit'], 'safe'],
+            [['name', 'unit', 'quotationTypeName'], 'safe'],
             [['price'], 'number'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Nombre',
+            'unit' => 'Unidad',
+            'price' => 'Precio',
+            'quotation_type_id' => 'Tipo de Cotización',
+            'quotationTypeName' => 'Tipo de Cotización',
         ];
     }
 
@@ -42,12 +57,23 @@ class ServicesSearch extends Services
      */
     public function search($params, $formName = null)
     {
-        $query = Services::find();
-
-        // add conditions that should always apply here
+        $query = Services::find()
+            ->joinWith(['quotationType']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'id',
+                    'name',
+                    'unit',
+                    'price',
+                    'quotationTypeName' => [
+                        'asc' => ['quotation_types.name' => SORT_ASC],
+                        'desc' => ['quotation_types.name' => SORT_DESC],
+                    ],
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);
@@ -60,13 +86,14 @@ class ServicesSearch extends Services
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'price' => $this->price,
-            'quotation_type_id' => $this->quotation_type_id,
+            'services.id' => $this->id,
+            'services.quotation_type_id' => $this->quotation_type_id,
+            'services.price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'unit', $this->unit]);
+        $query->andFilterWhere(['like', 'services.name', $this->name])
+            ->andFilterWhere(['like', 'services.unit', $this->unit])
+            ->andFilterWhere(['like', 'quotation_types.name', $this->quotationTypeName]);
 
         return $dataProvider;
     }

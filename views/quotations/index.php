@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\QuotationsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Quotations';
+$this->title = 'Cotizaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotations-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Quotations', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Cotización', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -31,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'client_id',
-            'quotation_type_id',
-            'technician_id',
-            'status_id',
-            //'total_amount',
-            //'custom_footer:ntext',
-            //'created_at',
-            //'updated_at',
+            'clientName',
+            'quotationTypeName',
+            'technicianName',
+            'statusName',
+            'total_amount:currency',
+            'custom_footer:ntext',
+            'created_at:datetime',
+            'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Quotations $model, $key, $index, $column) {

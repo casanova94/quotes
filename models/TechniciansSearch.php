@@ -25,6 +25,19 @@ class TechniciansSearch extends Technicians
     /**
      * {@inheritdoc}
      */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Nombre',
+            'phone' => 'Teléfono',
+            'email' => 'Correo Electrónico',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
@@ -43,10 +56,16 @@ class TechniciansSearch extends Technicians
     {
         $query = Technicians::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'id',
+                    'name',
+                    'phone',
+                    'email',
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);

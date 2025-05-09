@@ -45,7 +45,7 @@ class QuotationTemplates extends \yii\db\ActiveRecord
             [['quotation_type_id'], 'required'],
             [['quotation_type_id', 'show_prices'], 'integer'],
             [['header_text', 'footer_text', 'default_comments', 'terms_and_conditions'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['logo_url'], 'string', 'max' => 500],
             [['background_color'], 'string', 'max' => 20],
             [['font_family'], 'string', 'max' => 100],
@@ -61,17 +61,35 @@ class QuotationTemplates extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'quotation_type_id' => 'Quotation Type ID',
-            'header_text' => 'Header Text',
-            'footer_text' => 'Footer Text',
-            'logo_url' => 'Logo Url',
-            'background_color' => 'Background Color',
-            'font_family' => 'Font Family',
-            'default_comments' => 'Default Comments',
-            'terms_and_conditions' => 'Terms And Conditions',
-            'show_prices' => 'Show Prices',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'quotation_type_id' => 'Tipo de Cotización',
+            'header_text' => 'Texto de Encabezado',
+            'footer_text' => 'Texto de Pie de Página',
+            'logo_url' => 'URL del Logo',
+            'background_color' => 'Color de Fondo',
+            'font_family' => 'Familia de Fuente',
+            'default_comments' => 'Comentarios por Defecto',
+            'terms_and_conditions' => 'Términos y Condiciones',
+            'show_prices' => 'Mostrar Precios',
+            'created_at' => 'Fecha de Creación',
+            'updated_at' => 'Fecha de Actualización',
+            'quotationTypeName' => 'Tipo de Cotización',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
         ];
     }
 
@@ -83,6 +101,16 @@ class QuotationTemplates extends \yii\db\ActiveRecord
     public function getQuotationType()
     {
         return $this->hasOne(QuotationTypes::class, ['id' => 'quotation_type_id']);
+    }
+
+    /**
+     * Gets the quotation type name.
+     *
+     * @return string
+     */
+    public function getQuotationTypeName()
+    {
+        return $this->quotationType ? $this->quotationType->name : '';
     }
 
 }

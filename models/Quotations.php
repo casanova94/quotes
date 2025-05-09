@@ -47,7 +47,7 @@ class Quotations extends \yii\db\ActiveRecord
             [['client_id', 'quotation_type_id', 'technician_id', 'status_id'], 'integer'],
             [['total_amount'], 'number'],
             [['custom_footer'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clients::class, 'targetAttribute' => ['client_id' => 'id']],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
             [['technician_id'], 'exist', 'skipOnError' => true, 'targetClass' => Technicians::class, 'targetAttribute' => ['technician_id' => 'id']],
@@ -62,14 +62,31 @@ class Quotations extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'client_id' => 'Client ID',
-            'quotation_type_id' => 'Quotation Type ID',
-            'technician_id' => 'Technician ID',
-            'status_id' => 'Status ID',
-            'total_amount' => 'Total Amount',
-            'custom_footer' => 'Custom Footer',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'client_id' => 'Cliente',
+            'quotation_type_id' => 'Tipo de Cotización',
+            'technician_id' => 'Técnico',
+            'status_id' => 'Estado',
+            'total_amount' => 'Monto Total',
+            'custom_footer' => 'Pie de Página Personalizado',
+            'created_at' => 'Fecha de Creación',
+            'updated_at' => 'Fecha de Actualización',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
         ];
     }
 

@@ -37,7 +37,7 @@ class Clients extends \yii\db\ActiveRecord
             [['email', 'phone', 'address'], 'default', 'value' => null],
             [['name'], 'required'],
             [['address'], 'string'],
-            [['created_at'], 'safe'],
+            [['created_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['name', 'email'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 50],
         ];
@@ -50,11 +50,27 @@ class Clients extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'phone' => 'Phone',
-            'address' => 'Address',
-            'created_at' => 'Created At',
+            'name' => 'Nombre',
+            'email' => 'Correo Electrónico',
+            'phone' => 'Teléfono',
+            'address' => 'Dirección',
+            'created_at' => 'Fecha de Creación',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
         ];
     }
 

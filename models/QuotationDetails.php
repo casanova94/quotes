@@ -51,11 +51,13 @@ class QuotationDetails extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'quotation_id' => 'Quotation ID',
-            'service_id' => 'Service ID',
-            'quantity' => 'Quantity',
-            'unit_price' => 'Unit Price',
+            'quotation_id' => 'Cotización',
+            'service_id' => 'Servicio',
+            'quantity' => 'Cantidad',
+            'unit_price' => 'Precio Unitario',
             'subtotal' => 'Subtotal',
+            'quotationName' => 'Cotización',
+            'serviceName' => 'Servicio',
         ];
     }
 
@@ -77,6 +79,26 @@ class QuotationDetails extends \yii\db\ActiveRecord
     public function getService()
     {
         return $this->hasOne(Services::class, ['id' => 'service_id']);
+    }
+
+    /**
+     * Gets the quotation name.
+     *
+     * @return string
+     */
+    public function getQuotationName()
+    {
+        return $this->quotation ? $this->quotation->id : '';
+    }
+
+    /**
+     * Gets the service name.
+     *
+     * @return string
+     */
+    public function getServiceName()
+    {
+        return $this->service ? $this->service->name : '';
     }
 
 }

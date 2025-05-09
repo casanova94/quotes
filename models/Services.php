@@ -50,10 +50,11 @@ class Services extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'unit' => 'Unit',
-            'price' => 'Price',
-            'quotation_type_id' => 'Quotation Type ID',
+            'name' => 'Nombre',
+            'unit' => 'Unidad',
+            'price' => 'Precio',
+            'quotation_type_id' => 'Tipo de Cotización',
+            'quotationTypeName' => 'Tipo de Cotización',
         ];
     }
 
@@ -75,6 +76,16 @@ class Services extends \yii\db\ActiveRecord
     public function getQuotationType()
     {
         return $this->hasOne(QuotationTypes::class, ['id' => 'quotation_type_id']);
+    }
+
+    /**
+     * Gets the quotation type name.
+     *
+     * @return string
+     */
+    public function getQuotationTypeName()
+    {
+        return $this->quotationType ? $this->quotationType->name : '';
     }
 
 }

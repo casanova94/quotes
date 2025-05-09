@@ -45,7 +45,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Tecnicos', 'url' => ['/technicians']],
             ['label' => 'Estados de cotizaciones', 'url' => ['/quotation-statuses']],
             ['label' => 'Tipos de cotizaciones', 'url' => ['/quotation-types']],
-            ['label' => 'Detalles de cotizaciones', 'url' => ['/quotation-details']],
+            //['label' => 'Detalles de cotizaciones', 'url' => ['/quotation-details']],
+            ['label' => 'Plantillas', 'url' => ['/quotation-templates']],
             ['label' => 'Servicios', 'url' => ['/services']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]

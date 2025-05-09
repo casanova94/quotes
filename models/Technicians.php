@@ -46,9 +46,9 @@ class Technicians extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'phone' => 'Phone',
-            'email' => 'Email',
+            'name' => 'Nombre',
+            'phone' => 'Teléfono',
+            'email' => 'Correo Electrónico',
         ];
     }
 

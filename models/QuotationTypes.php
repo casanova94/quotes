@@ -47,8 +47,8 @@ class QuotationTypes extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
+            'name' => 'Nombre',
+            'description' => 'Descripción',
         ];
     }
 
