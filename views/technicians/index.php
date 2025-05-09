@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\TechniciansSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Technicians';
+$this->title = 'Técnicos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="technicians-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Technicians', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar técnico', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -29,8 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            //'id',
             'name',
             'phone',
             'email:email',

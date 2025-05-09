@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\color\ColorInput
 
 /** @var yii\web\View $this */
 /** @var app\models\QuotationStatuses $model */
@@ -14,10 +15,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'color_code')->textInput(['maxlength' => true]) ?>
+    <?= '<label class="control-label">Color del estado</label>';
+    echo ColorInput::widget([
+        'model' => $model,
+        'attribute' => 'color_code',
+        'options' => ['placeholder' => 'Select color ...']
+    ]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    <div class="form-group mt-4">
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

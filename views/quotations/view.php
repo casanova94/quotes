@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
 
-$this->title = $model->id;
+$this->title = '#' . str_pad($model->id, 6, '0', STR_PAD_LEFT);
 $this->params['breadcrumbs'][] = ['label' => 'Quotations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Desea eliminar esta cotización?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,15 +29,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'client_id',
-            'quotation_type_id',
-            'technician_id',
-            'status_id',
+            //'id',
+            [
+                'attribute' => 'client.name',
+                'label' => 'Nombre del cliente',
+            ],
+            [
+                'attribute' => 'client.address',
+                'label' => 'Dirección',
+            ],
+            [
+                'attribute' => 'quotationType.name',
+                'label' => 'Tipo de cotización',
+            ],
+            [
+                'attribute' => 'technician.name',
+                'label' => 'Técnico',
+            ],
+            [
+                'attribute' => 'status.name',
+                'label' => 'Estado',
+            ],
             'total_amount',
-            'custom_footer:ntext',
+            //'custom_footer:ntext',
             'created_at',
-            'updated_at',
+           // 'updated_at',
         ],
     ]) ?>
 

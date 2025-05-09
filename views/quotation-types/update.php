@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\QuotationTypes $model */
 
-$this->title = 'Update Quotation Types: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Quotation Types', 'url' => ['index']];
+$this->title = 'Actualizar tipo: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Tipos de cotizaciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

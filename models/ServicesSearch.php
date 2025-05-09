@@ -10,7 +10,8 @@ use app\models\Services;
  * ServicesSearch represents the model behind the search form of `app\models\Services`.
  */
 class ServicesSearch extends Services
-{
+{   
+    public $quotationTypeName;
     /**
      * {@inheritdoc}
      */

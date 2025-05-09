@@ -9,6 +9,7 @@ use yii\widgets\Pjax;
 /** @var yii\web\View $this */
 /** @var app\models\QuotationsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+use yii\jui\DatePicker;
 
 $this->title = 'Cotizaciones';
 $this->params['breadcrumbs'][] = $this->title;
@@ -30,15 +31,50 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'clientName',
-            'quotationTypeName',
-            'technicianName',
-            'statusName',
-            'total_amount:currency',
-            'custom_footer:ntext',
-            'created_at:datetime',
-            'updated_at:datetime',
+            //'id',
+            [
+                'attribute' => 'id',
+                'label' => 'Folio',
+                'value' => function ($model) {
+                    return '#' . str_pad($model->id, 6, '0', STR_PAD_LEFT);
+                },
+                'filter' => Html::input('text', 'QuotationsSearch[id]', $searchModel->id, ['class' => 'form-control']),
+            ],
+            
+            [
+                'attribute' => 'clientName',
+                'value' => 'client.name', 
+                'label' => 'Cliente',
+            ],
+            [
+                'attribute' => 'quotationTypeName',
+                'value' => 'quotationType.name',
+                'label' => 'Tipo'
+            ],
+            [
+                'attribute' => 'technicianName',
+                'value' => 'technician.name', 
+                'label' => 'Técnico',
+            ],
+            [
+                'attribute' => 'statusName',
+                'value' => 'status.name', 
+                'label' => 'Estado',
+            ],
+            //'total_amount:currency',
+            //'custom_footer:ntext',
+            [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:Y-m-d'],
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'created_at',
+                    'language' => 'es',
+                    'dateFormat' => 'yyyy-MM-dd',
+                    'options' => ['class' => 'form-control'],
+                ]),
+            ],
+            //'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Quotations $model, $key, $index, $column) {

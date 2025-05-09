@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var app\models\QuotationStatuses $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Quotation Statuses', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Estados de cotizaciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Desea eliminar este estado?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,9 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+           //'id',
             'name',
-            'color_code',
+            [
+                'label' => 'Color',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div style="width: 60px; height: 25px; background-color:' . $model->color_code . '; border: 1px solid #ccc;"></div>';
+                },
+            ],
         ],
     ]) ?>
 

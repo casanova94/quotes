@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\QuotationTemplates $model */
 
-$this->title = 'Create Quotation Templates';
-$this->params['breadcrumbs'][] = ['label' => 'Quotation Templates', 'url' => ['index']];
+$this->title = 'Agregar formato';
+$this->params['breadcrumbs'][] = ['label' => 'Formatos de cotización', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-templates-create">

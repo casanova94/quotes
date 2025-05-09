@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\QuotationStatuses $model */
 
-$this->title = 'Update Quotation Statuses: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Quotation Statuses', 'url' => ['index']];
+$this->title = 'Actualizar estado: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Estados de cotizaciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="quotation-statuses-update">
 

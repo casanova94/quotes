@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\ServicesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Services';
+$this->title = 'Servicios';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="services-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Services', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar servicio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,11 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'name',
             'unit',
             'price',
-            'quotation_type_id',
+            [
+                'attribute' => 'quotationTypeName',
+                'value' => 'quotationType.name',
+                'label' => 'Tipo'
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Services $model, $key, $index, $column) {

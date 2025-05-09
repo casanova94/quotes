@@ -7,20 +7,20 @@ use yii\widgets\DetailView;
 /** @var app\models\QuotationTemplates $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Quotation Templates', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Formatos de cotización', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="quotation-templates-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="d-none"><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Deseas aliminar este formato?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,8 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'quotation_type_id',
+            'quotationType.name',
             'header_text:ntext',
             'footer_text:ntext',
             'logo_url:url',
@@ -38,7 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'font_family',
             'default_comments:ntext',
             'terms_and_conditions:ntext',
-            'show_prices',
+            [
+                'attribute'=> 'show_prices',
+                'label' => 'Mostrar precios',
+                'format' => 'raw', // para que no escape el texto
+                'value' => function ($model) {
+                    return $model->show_prices ? 'Sí' : 'No';
+                },
+            ],
             'created_at',
             'updated_at',
         ],

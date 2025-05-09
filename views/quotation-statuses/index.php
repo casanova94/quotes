@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\QuotationStatusesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Quotation Statuses';
+$this->title = 'Estados de cotizaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-statuses-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Quotation Statuses', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar estado', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,9 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           // 'id',
             'name',
-            'color_code',
+            [
+                'attribute' => 'color_code',
+                'format' => 'raw',
+                'label' => 'Color',
+                'filter' => false, 
+                'value' => function ($model) {
+                    return '<div style="width: 30px; height: 20px; background-color:' . $model->color_code . '; border: 1px solid #ccc;"></div>';
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, QuotationStatuses $model, $key, $index, $column) {

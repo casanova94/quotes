@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\QuotationTypesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Quotation Types';
+$this->title = 'Tipos de cotizaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-types-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Quotation Types', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar tipo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           // 'id',
             'name',
             'description:ntext',
             [

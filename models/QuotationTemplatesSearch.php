@@ -10,7 +10,7 @@ use app\models\QuotationTemplates;
  * QuotationTemplatesSearch represents the model behind the search form of `app\models\QuotationTemplates`.
  */
 class QuotationTemplatesSearch extends QuotationTemplates
-{
+{   public $quotationTypeName;
     /**
      * {@inheritdoc}
      */
