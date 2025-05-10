@@ -110,7 +110,7 @@ use app\models\Services;
                     <?= Html::textInput(
                         "QuotationDetails[$index][subtotal]",
                         $detail->subtotal,
-                        ['class' => 'form-control subtotal-input', 'readonly' => true]
+                        ['class' => 'form-control subtotal-input bg-light', 'readonly' => true]
                     ) ?>
                 </td>
                 <td>
@@ -175,28 +175,33 @@ $js = <<<JS
 
     // Función para actualizar los servicios disponibles
     function updateServices() {
-    var quotationTypeId = \$('#quotations-quotation_type_id').val();
+        var quotationTypeId = $('#quotations-quotation_type_id').val();
 
-    if (quotationTypeId) {
-        \$.get('/quotes/web/quotations/get-services', {quotation_type_id: quotationTypeId}, function(data) {
-            \$('.service-select').each(function() {
-                var \$select = \$(this);
-                var currentValue = \$select.val();
-                \$select.empty();
+        if (quotationTypeId) {
+            $.get('/quotes/web/quotations/get-services', {quotation_type_id: quotationTypeId}, function(data) {
+                $('.service-select').each(function() {
+                    var \$select = $(this);
+                    var currentValue = \$select.val();
+                    \$select.empty(); // Vaciar el dropdown
 
-                \$.each(data, function(key, value) {
-                    \$select.append(
-                        \$('<option></option>')
-                            .attr('value', key)
-                            .text(value)
-                    );
+                    // Agregar la opción de placeholder
+                    \$select.append('<option value="" disabled selected>Elegir servicio</option>');
+
+                    // Cargar los servicios dinámicamente
+                    $.each(data, function(key, value) {
+                        \$select.append(
+                            $('<option></option>')
+                                .attr('value', key)
+                                .text(value)
+                        );
+                    });
+
+                    // Restaurar el valor seleccionado previamente
+                    \$select.val(currentValue);
                 });
-
-                \$select.val(currentValue);
             });
-        });
+        }
     }
-}
 
 
     // Evento para agregar nueva fila
@@ -213,7 +218,7 @@ $js = <<<JS
         row.html(`
             <td>
                 <select name="QuotationDetails[\${index}][service_id]" class="form-control service-select">
-                    <option value="">Seleccione un servicio</option>
+                    <option value="" disabled selected>Elegir servicio</option>
                 </select>
             </td>
             <td>
@@ -242,7 +247,7 @@ $js = <<<JS
 
         if (id) {
             if (confirm('¿Está seguro de eliminar este detalle?')) {
-                $.post('/quotes/web/quotation-details/delete', {id: id}, function(response) {
+                $.post('/quotes/web/quotation-details/delete?id=' + id, function(response) {
                     if (response.success) {
                         \$row.remove(); // Elimina la fila del DOM
                         if ($('#details-table tbody').children().length === 0) {
