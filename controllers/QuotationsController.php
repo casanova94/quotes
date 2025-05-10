@@ -6,6 +6,8 @@ use Yii;
 use app\models\Quotations;
 use app\models\QuotationsSearch;
 use app\models\QuotationDetails;
+use app\models\QuotationTemplates;
+use Mpdf\Mpdf;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -241,5 +243,45 @@ class QuotationsController extends Controller
             'success' => false,
             'message' => 'Servicio no encontrado.',
         ];
+    }
+
+    /**
+     * Generates a PDF for a specific quotation.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionGeneratePdf($id)
+    {
+        $quotation = $this->findModel($id);
+
+        // Obtener el template asociado al tipo de cotización
+        $template = QuotationTemplates::findOne(['quotation_type_id' => $quotation->quotation_type_id]);
+        if (!$template) {
+            throw new NotFoundHttpException('No se encontró un template para este tipo de cotización.');
+        }
+
+        // Renderizar el contenido HTML del PDF
+        $html = $this->renderPartial('_pdf', [
+            'quotation' => $quotation,
+            'template' => $template,
+        ]);
+
+        // Configurar MPDF
+        $mpdf = new Mpdf();
+
+        // Configurar el pie de página con los términos y condiciones
+        $mpdf->SetHTMLFooter('
+            <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                ' . nl2br(htmlspecialchars($template->terms_and_conditions)) . '
+            </div>
+        ');
+
+        // Escribir el contenido HTML en el PDF
+        $mpdf->WriteHTML($html);
+
+        // Generar el archivo PDF
+        $fileName = 'Cotizacion_' . $quotation->id . '.pdf';
+        return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
     }
 }
