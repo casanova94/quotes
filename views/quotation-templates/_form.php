@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use app\models\QuotationTypes;
 use yii\helpers\ArrayHelper;
 use kartik\switchinput\SwitchInput;
+use kartik\color\ColorInput
+
 
 /** @var yii\web\View $this */
 /** @var app\models\QuotationTemplates $model */
@@ -24,9 +26,30 @@ use kartik\switchinput\SwitchInput;
 
     <?= $form->field($model, 'footer_text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'logo_url')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'logoFile')->widget(\kartik\file\FileInput::class, [
+    'options' => [
+        'accept' => 'image/*', // Solo aceptar imágenes
+    ],
+    'pluginOptions' => [
+        'initialPreview' => $model->logo_url ? [Yii::getAlias('@web') . '/' . $model->logo_url] : [], // Mostrar preview si ya existe una imagen
+        'initialPreviewAsData' => true, // Mostrar la imagen como preview
+        'overwriteInitial' => true, // Sobrescribir la imagen inicial
+        'showRemove' => true, // Mostrar botón de eliminar
+        'showUpload' => false, // Ocultar botón de subida (se subirá al guardar el formulario)
+        'deleteUrl' => \yii\helpers\Url::to(['quotation-templates/delete-logo', 'id' => $model->id]), // URL para eliminar la imagen
+        'allowedFileExtensions' => ['jpg', 'jpeg', 'png', 'gif'], // Extensiones permitidas
+        'maxFileSize' => 2048, // Tamaño máximo en KB
+        'language' => 'es', // Cambiar el idioma a español
+    ],
+]) ?>
 
-    <?= $form->field($model, 'background_color')->textInput(['maxlength' => true]) ?>
+        <?= '<label class="control-label">Color del estado</label>';
+    echo ColorInput::widget([
+        'model' => $model,
+        'attribute' => 'background_color',
+        'options' => ['placeholder' => 'Select color ...']
+    ]) ?>
+
 
     <?= $form->field($model, 'font_family')->dropDownList([
     'Arial, sans-serif' => 'Arial',

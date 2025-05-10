@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "quotation_templates".
@@ -24,7 +25,7 @@ use Yii;
  */
 class QuotationTemplates extends \yii\db\ActiveRecord
 {
-
+    public $logoFile; // Atributo para manejar la subida del archivo
 
     /**
      * {@inheritdoc}
@@ -51,6 +52,8 @@ class QuotationTemplates extends \yii\db\ActiveRecord
             [['font_family'], 'string', 'max' => 100],
             [['quotation_type_id'], 'unique'],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
+            [['quotation_type_id', 'header_text', 'footer_text', 'background_color', 'font_family', 'default_comments', 'terms_and_conditions','logoFile'], 'safe'],
+            //[['logoFile'], 'file', 'extensions' => 'jpg, jpeg, png, gif', 'maxSize' => 2048 * 1024], // Validación del archivo
         ];
     }
 
@@ -64,7 +67,8 @@ class QuotationTemplates extends \yii\db\ActiveRecord
             'quotation_type_id' => 'Tipo de Cotización',
             'header_text' => 'Texto de Encabezado',
             'footer_text' => 'Texto de Pie de Página',
-            'logo_url' => 'URL del Logo',
+            'logo_url' => 'Logo',
+            'logoFile' => 'Logo',
             'background_color' => 'Color de Fondo',
             'font_family' => 'Familia de Fuente',
             'default_comments' => 'Comentarios por Defecto',
@@ -113,4 +117,31 @@ class QuotationTemplates extends \yii\db\ActiveRecord
         return $this->quotationType ? $this->quotationType->name : '';
     }
 
+    public function uploadLogo()
+    {
+        if ($this->logoFile) {
+            $fileName =  uniqid() . '.' . $this->logoFile->extension;
+            if ($this->logoFile->saveAs(Yii::getAlias('@webroot/uploads/') . $fileName)) {
+                $this->logo_url = 'uploads/' . $fileName; // Guardar la URL en el atributo
+                return true;
+            } else {
+    Yii::error('Error al guardar el archivo: ' . $fileName);
+    return false;
+}
+        }
+        return false;
+    }
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            // Verificar si existe una imagen asociada
+            if ($this->logo_url && file_exists(Yii::getAlias('@webroot/') . $this->logo_url)) {
+                // Eliminar el archivo del servidor
+                unlink(Yii::getAlias('@webroot/') . $this->logo_url);
+            }
+            return true; // Continuar con la eliminación del registro
+        }
+        return false; // Cancelar la eliminación si algo falla
+    }
 }

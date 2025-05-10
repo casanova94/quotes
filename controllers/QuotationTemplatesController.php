@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\QuotationTemplates;
 use app\models\QuotationTemplatesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * QuotationTemplatesController implements the CRUD actions for QuotationTemplates model.
@@ -69,14 +71,13 @@ class QuotationTemplatesController extends Controller
     {
         $model = new QuotationTemplates();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->logoFile = UploadedFile::getInstance($model, 'logoFile');
+            if ($model->logoFile && $model->uploadLogo() && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
+        
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -93,8 +94,14 @@ class QuotationTemplatesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->logoFile = UploadedFile::getInstance($model, 'logoFile');
+            if ($model->logoFile && $model->uploadLogo() && $model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            if (!$model->logoFile && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -117,6 +124,23 @@ class QuotationTemplatesController extends Controller
     }
 
     /**
+     * Deletes the logo of an existing QuotationTemplates model.
+     * @param int $id ID
+     * @return bool
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDeleteLogo($id)
+    {
+        $model = $this->findModel($id);
+        if ($model && $model->logo_url && file_exists($model->logo_url)) {
+            unlink($model->logo_url); // Eliminar el archivo del servidor
+            $model->logo_url = null;
+            $model->save(false);
+        }
+        return true;
+    }
+
+    /**
      * Finds the QuotationTemplates model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
@@ -125,7 +149,7 @@ class QuotationTemplatesController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = QuotationTemplates::findOne(['id' => $id])) !== null) {
+        if (($model = QuotationTemplates::findOne($id)) !== null) {
             return $model;
         }
 

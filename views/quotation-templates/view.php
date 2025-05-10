@@ -32,8 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'quotationType.name',
             'header_text:ntext',
             'footer_text:ntext',
-            'logo_url:url',
-            'background_color',
+            //'logo_url:url',
+            [
+                'attribute' => 'logo_url',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->logo_url ? Html::img(Yii::getAlias('@web') . '/' . $model->logo_url, ['width' => '100px']) : 'No hay logo';
+                },
+            ],
+            [
+                'label' => 'Color',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div style="width: 40px; height: 25px; background-color:' . $model->background_color . '; border: 1px solid #ccc;"></div>';
+                },
+            ],
             'font_family',
             'default_comments:ntext',
             'terms_and_conditions:ntext',
