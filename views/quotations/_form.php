@@ -20,9 +20,13 @@ use yii\bootstrap5\Modal;
 
      <div class="card mt-3">
 
-      <div class="card-header">
-            <h3 class="card-title">Datos Generales</h3>
-        </div>
+   <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">Datos Generales</h3>
+    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createClientModal">
+        Nuevo cliente
+    </button>
+</div>
+
         <div class="card-body">
              <div class="row">
         <div class="col-md-4">
@@ -31,9 +35,7 @@ use yii\bootstrap5\Modal;
         ArrayHelper::map(Clients::find()->all(), 'id', 'name'),
         ['prompt' => 'Seleccione un cliente']
     ) ?>
-    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createClientModal">
-        + Agregar Cliente
-    </button>
+
 </div>
         </div>
         <div class="col-md-4">
@@ -144,7 +146,7 @@ use yii\bootstrap5\Modal;
             <h3 class="card-title">Texto personalizado</h3>
         </div>
         <div class="card-body">
-                <?= $form->field($model, 'custom_footer')->textarea(['rows' => 6])->label(false) ?>
+                <?= $form->field($model, 'custom_footer')->textarea(['rows' => 6])->label(false)->hint('Este texto aparecerá en la parte inferior de la cotización') ?>
 
         </div>
         </div>
