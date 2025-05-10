@@ -8,6 +8,7 @@ use app\models\QuotationTypes;
 use app\models\Technicians;
 use app\models\QuotationStatuses;
 use app\models\Services;
+use yii\bootstrap5\Modal; 
 
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
@@ -25,10 +26,15 @@ use app\models\Services;
         <div class="card-body">
              <div class="row">
         <div class="col-md-4">
-            <?= $form->field($model, 'client_id')->dropDownList(
-                ArrayHelper::map(Clients::find()->all(), 'id', 'name'),
-                ['prompt' => 'Seleccione un cliente']
-            ) ?>
+           <div class="form-group field-quotation-client_id">
+    <?= $form->field($model, 'client_id')->dropDownList(
+        ArrayHelper::map(Clients::find()->all(), 'id', 'name'),
+        ['prompt' => 'Seleccione un cliente']
+    ) ?>
+    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createClientModal">
+        + Agregar Cliente
+    </button>
+</div>
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'quotation_type_id')->dropDownList(
@@ -325,7 +331,48 @@ $js = <<<JS
 
     // Inicializar servicios disponibles
     updateServices();
+
+    $('#client-form').on('beforeSubmit', function(e) {
+    e.preventDefault();
+
+    var form = $(this);
+    $.post(form.attr('action'), form.serialize())
+        .done(function(response) {
+            if (response.success) {
+                // Agrega el nuevo cliente al dropdown
+                var select = $('#quotations-client_id');
+                select.append($('<option>', {
+                    value: response.id,
+                    text: response.name,
+                    selected: true
+                }));
+
+                $('#createClientModal').modal('hide');
+                form[0].reset();
+            }
+        })
+        .fail(function() {
+            alert('Ocurrió un error al guardar el cliente.');
+        });
+
+    return false;
+});
 JS;
 
 $this->registerJs($js);
+
+
+Modal::begin([
+    'title' => 'Agregar nuevo cliente',
+    'id' => 'createClientModal',
+    'size' => 'modal-lg',
+]);
+
+echo $this->render('/clients/_ajax_form', [
+    'model' => new \app\models\Clients(),
+    'isAjax' => true, // O una bandera para ocultar botones extra
+]);
+
+Modal::end();
+
 ?>

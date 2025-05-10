@@ -7,6 +7,7 @@ use app\models\ClientsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ClientsController implements the CRUD actions for Clients model.
@@ -131,4 +132,20 @@ class ClientsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionCreateFromQuotation()
+{
+    $model = new Clients();
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return [
+            'success' => true,
+            'id' => $model->id,
+            'name' => $model->name,
+        ];
+    }
+
+    return $this->renderAjax('_form', ['model' => $model]);
+}
 }
