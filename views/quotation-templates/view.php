@@ -30,9 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'quotationType.name',
-            'header_text:ntext',
-            'footer_text:ntext',
-            //'logo_url:url',
+            [
+                'attribute' => 'header_text',
+                'format' => 'html', // Cambiado de ntext a html
+            ],
+            [
+                'attribute' => 'footer_text',
+                'format' => 'html', // Cambiado de ntext a html
+            ],
             [
                 'attribute' => 'logo_url',
                 'format' => 'raw',
@@ -48,8 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'font_family',
-            'default_comments:ntext',
-            'terms_and_conditions:ntext',
+            [
+                'attribute' => 'default_comments',
+                'format' => 'html', // Cambiado de ntext a html
+            ],
+            [
+                'attribute' => 'terms_and_conditions',
+                'format' => 'html', // Cambiado de ntext a html
+            ],
             [
                 'attribute'=> 'show_prices',
                 'label' => 'Mostrar precios',

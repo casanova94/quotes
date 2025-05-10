@@ -22,7 +22,8 @@
         "kartik-v/yii2-widget-colorinput": "dev-master",
         "kartik-v/yii2-widget-switchinput": "dev-master",
         "kartik-v/yii2-widget-fileinput": "^1.1",
-        "mpdf/mpdf": "^8.2"
+        "mpdf/mpdf": "^8.2",
+        "kartik-v/yii2-editors": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

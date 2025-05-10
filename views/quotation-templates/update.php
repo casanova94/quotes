@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Actualizar formato: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Formatos de cotización', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="quotation-templates-update">
 

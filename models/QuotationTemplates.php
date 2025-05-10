@@ -65,8 +65,8 @@ class QuotationTemplates extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'quotation_type_id' => 'Tipo de Cotización',
-            'header_text' => 'Texto de Encabezado',
-            'footer_text' => 'Texto de Pie de Página',
+            'header_text' => 'Información de la empresa',
+            'footer_text' => 'Texto despues de la tabla',
             'logo_url' => 'Logo',
             'logoFile' => 'Logo',
             'background_color' => 'Color de Fondo',
