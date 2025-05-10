@@ -212,18 +212,18 @@ $js = <<<JS
         var row = $('<tr>');
         row.html(`
             <td>
-                <select name="QuotationDetails[\\\${index}][service_id]" class="form-control service-select">
+                <select name="QuotationDetails[\${index}][service_id]" class="form-control service-select">
                     <option value="">Seleccione un servicio</option>
                 </select>
             </td>
             <td>
-                <input type="number" name="QuotationDetails[\\\${index}][quantity]" class="form-control quantity-input" min="1" value="1">
+                <input type="number" name="QuotationDetails[\${index}][quantity]" class="form-control quantity-input" min="1" value="1">
             </td>
             <td>
-                <input type="number" name="QuotationDetails[\\\${index}][unit_price]" class="form-control price-input" step="0.01" min="0" value="0">
+                <input type="number" name="QuotationDetails[\${index}][unit_price]" class="form-control price-input" step="0.01" min="0" value="0">
             </td>
             <td>
-                <input type="text" name="QuotationDetails[\\\${index}][subtotal]" class="form-control subtotal-input" readonly>
+                <input type="text" name="QuotationDetails[\${index}][subtotal]" class="form-control subtotal-input" readonly>
             </td>
             <td>
                 <button type="button" class="btn btn-danger btn-sm delete-row">
