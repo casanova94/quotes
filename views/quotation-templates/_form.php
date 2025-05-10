@@ -43,7 +43,7 @@ use kartik\color\ColorInput
     ],
 ]) ?>
 
-        <?= '<label class="control-label">Color del estado</label>';
+        <?= '<label class="control-label">Color de fondo</label>';
     echo ColorInput::widget([
         'model' => $model,
         'attribute' => 'background_color',

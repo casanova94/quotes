@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Color',
+                'label' => 'Color de fondo',
                 'format' => 'raw',
                 'value' => function ($model) {
                     return '<div style="width: 40px; height: 25px; background-color:' . $model->background_color . '; border: 1px solid #ccc;"></div>';
