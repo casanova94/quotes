@@ -51,6 +51,13 @@ $config = [
             'rules' => [
             ],
         ],
+        'view' => [
+         'theme' => [
+             'pathMap' => [
+                '@app/views' => '@app/views'
+             ],
+         ],
+    ],
         
     ],
     'params' => $params,
