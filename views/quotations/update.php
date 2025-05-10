@@ -4,11 +4,12 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
+/** @var app\models\QuotationDetails[] $details */
 
-$this->title = 'Editar cotización: ' . $model->id;
+$this->title = 'Actualizar Cotización #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Cotizaciones', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Cotización #' . $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="quotations-update">
 
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'details' => $details,
     ]) ?>
 
 </div>

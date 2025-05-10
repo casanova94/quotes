@@ -2,11 +2,15 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Quotations;
 use app\models\QuotationsSearch;
+use app\models\QuotationDetails;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\Response;
 
 /**
  * QuotationsController implements the CRUD actions for Quotations model.
@@ -21,10 +25,20 @@ class QuotationsController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
+                        'get-services' => ['GET'],
                     ],
                 ],
             ]
@@ -57,6 +71,7 @@ class QuotationsController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'details' => $this->findModel($id)->quotationDetails,
         ]);
     }
 
@@ -68,17 +83,38 @@ class QuotationsController extends Controller
     public function actionCreate()
     {
         $model = new Quotations();
+        $details = [];
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($model->save()) {
+                        $details = Yii::$app->request->post('QuotationDetails', []);
+                        foreach ($details as $detail) {
+                            $quotationDetail = new QuotationDetails();
+                            $quotationDetail->quotation_id = $model->id;
+                            $quotationDetail->service_id = $detail['service_id'];
+                            $quotationDetail->quantity = $detail['quantity'];
+                            $quotationDetail->unit_price = $detail['unit_price'];
+                            $quotationDetail->subtotal = $detail['quantity'] * $detail['unit_price'];
+                            if (!$quotationDetail->save()) {
+                                throw new \Exception('Error al guardar el detalle');
+                            }
+                        }
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'details' => $details,
         ]);
     }
 
@@ -92,13 +128,42 @@ class QuotationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $details = $model->quotationDetails;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($model->save()) {
+                        // Eliminar detalles existentes
+                        QuotationDetails::deleteAll(['quotation_id' => $model->id]);
+                        
+                        // Guardar nuevos detalles
+                        $details = Yii::$app->request->post('QuotationDetails', []);
+                        foreach ($details as $detail) {
+                            $quotationDetail = new QuotationDetails();
+                            $quotationDetail->quotation_id = $model->id;
+                            $quotationDetail->service_id = $detail['service_id'];
+                            $quotationDetail->quantity = $detail['quantity'];
+                            $quotationDetail->unit_price = $detail['unit_price'];
+                            $quotationDetail->subtotal = $detail['quantity'] * $detail['unit_price'];
+                            if (!$quotationDetail->save()) {
+                                throw new \Exception('Error al guardar el detalle');
+                            }
+                        }
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'details' => $details,
         ]);
     }
 
@@ -129,6 +194,28 @@ class QuotationsController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('La cotización solicitada no existe.');
+    }
+
+    /**
+     * Obtiene los servicios disponibles para un tipo de cotización específico.
+     * @return array
+     */
+    public function actionGetServices()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $quotationTypeId = Yii::$app->request->get('quotation_type_id');
+        
+        $services = \app\models\Services::find()
+            ->where(['quotation_type_id' => $quotationTypeId])
+            ->asArray()
+            ->all();
+            
+        $result = [];
+        foreach ($services as $service) {
+            $result[$service['id']] = $service['name'];
+        }
+        
+        return $result;
     }
 }
