@@ -8,7 +8,7 @@ use app\models\QuotationTypes;
 use app\models\Technicians;
 use app\models\QuotationStatuses;
 use app\models\Services;
-use yii\bootstrap5\Modal; 
+use yii\bootstrap4\Modal; 
 
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
@@ -22,7 +22,7 @@ use yii\bootstrap5\Modal;
 
    <div class="card-header d-flex justify-content-between align-items-center">
     <h3 class="card-title">Datos Generales</h3>
-    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#createClientModal">
+    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#createClientModal">
         Nuevo cliente
     </button>
 </div>
