@@ -77,52 +77,52 @@ use app\models\Services;
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="empty-service-row">
-                            <td colspan="5" class="text-center">No hay servicios agregados</td>
-                        </tr>
-                        <?php 
-                        $details = $details ?? [];
-                        foreach ($details as $index => $detail): 
-                        ?>
-                            <tr>
-                                <td>
-                                    <?= Html::dropDownList(
-                                        "QuotationDetails[$index][service_id]",
-                                        $detail->service_id,
-                                        ArrayHelper::map(Services::find()->where(['quotation_type_id' => $model->quotation_type_id])->all(), 'id', 'name'),
-                                        ['class' => 'form-control service-select']
-                                    ) ?>
-                                </td>
-                                <td>
-                                    <?= Html::textInput(
-                                        "QuotationDetails[$index][quantity]",
-                                        $detail->quantity,
-                                        ['class' => 'form-control quantity-input', 'type' => 'number', 'min' => 1]
-                                    ) ?>
-                                </td>
-                                <td>
-                                    <?= Html::textInput(
-                                        "QuotationDetails[$index][unit_price]",
-                                        $detail->unit_price,
-                                        ['class' => 'form-control price-input', 'type' => 'number', 'step' => '0.01', 'min' => 0]
-                                    ) ?>
-                                </td>
-                                <td>
-                                    <?= Html::textInput(
-                                        "QuotationDetails[$index][subtotal]",
-                                        $detail->subtotal,
-                                        ['class' => 'form-control subtotal-input', 'readonly' => true]
-                                    ) ?>
-                                </td>
-                                <td>
-                                    <?= Html::button('<i class="fas fa-trash"></i>', [
-                                        'class' => 'btn btn-danger btn-sm delete-row',
-                                        'data-id' => $detail->id
-                                    ]) ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+    <?php if (empty($details)): ?>
+        <tr class="empty-service-row">
+            <td colspan="5" class="text-center">No hay servicios agregados</td>
+        </tr>
+    <?php else: ?>
+        <?php foreach ($details as $index => $detail): ?>
+            <tr>
+                <td>
+                    <?= Html::dropDownList(
+                        "QuotationDetails[$index][service_id]",
+                        $detail->service_id,
+                        ArrayHelper::map(Services::find()->where(['quotation_type_id' => $model->quotation_type_id])->all(), 'id', 'name'),
+                        ['class' => 'form-control service-select']
+                    ) ?>
+                </td>
+                <td>
+                    <?= Html::textInput(
+                        "QuotationDetails[$index][quantity]",
+                        $detail->quantity,
+                        ['class' => 'form-control quantity-input', 'type' => 'number', 'min' => 1]
+                    ) ?>
+                </td>
+                <td>
+                    <?= Html::textInput(
+                        "QuotationDetails[$index][unit_price]",
+                        $detail->unit_price,
+                        ['class' => 'form-control price-input', 'type' => 'number', 'step' => '0.01', 'min' => 0]
+                    ) ?>
+                </td>
+                <td>
+                    <?= Html::textInput(
+                        "QuotationDetails[$index][subtotal]",
+                        $detail->subtotal,
+                        ['class' => 'form-control subtotal-input', 'readonly' => true]
+                    ) ?>
+                </td>
+                <td>
+                    <?= Html::button('<i class="fas fa-trash"></i>', [
+                        'class' => 'btn btn-danger btn-sm delete-row',
+                        'data-id' => $detail->id
+                    ]) ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</tbody>
                 </table>
             </div>
             <?= Html::button('<i class="fas fa-plus"></i> Agregar Detalle', [
@@ -238,19 +238,38 @@ $js = <<<JS
     // Evento para eliminar fila
     $(document).on('click', '.delete-row', function() {
         var id = $(this).data('id');
+        var \$row = $(this).closest('tr');
+
         if (id) {
             if (confirm('¿Está seguro de eliminar este detalle?')) {
-                $.post('/quotes/web/quotation-details/delete?id=' + id, function(response) {
+                $.post('/quotes/web/quotation-details/delete', {id: id}, function(response) {
                     if (response.success) {
-                        $(this).closest('tr').remove();
-                        //calculateTotal();
-                        location.reload();
+                        \$row.remove(); // Elimina la fila del DOM
+                        if ($('#details-table tbody').children().length === 0) {
+                            $('#details-table tbody').html(`
+                                <tr class="empty-service-row">
+                                    <td colspan="5" class="text-center">No hay servicios agregados</td>
+                                </tr>
+                            `);
+                        }
+                        calculateTotal(); // Recalcula el total
+                    } else {
+                        alert(response.message || 'No se pudo eliminar el detalle.');
                     }
+                }).fail(function() {
+                    alert('Error al procesar la solicitud.');
                 });
             }
         } else {
-            $(this).closest('tr').remove();
-            calculateTotal();
+            \$row.remove(); // Elimina la fila del DOM
+            if ($('#details-table tbody').children().length === 0) {
+                $('#details-table tbody').html(`
+                    <tr class="empty-service-row">
+                        <td colspan="5" class="text-center">No hay servicios agregados</td>
+                    </tr>
+                `);
+            }
+            calculateTotal(); // Recalcula el total
         }
     });
 
@@ -262,7 +281,15 @@ $js = <<<JS
     // Evento para actualizar servicios cuando cambia el tipo de cotización
     $('#quotations-quotation_type_id').on('change', function() {
         updateServices();
-        $('#details-table tbody').empty();
+        $('#details-table tbody').empty(); // Vaciar la tabla
+        // Verificar si la tabla está vacía y agregar la leyenda
+        if ($('#details-table tbody').children().length === 0) {
+            $('#details-table tbody').html(`
+                <tr class="empty-service-row">
+                    <td colspan="5" class="text-center">No hay servicios agregados</td>
+                </tr>
+            `);
+        }
         calculateTotal();
     });
 
