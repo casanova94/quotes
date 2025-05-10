@@ -52,7 +52,7 @@ use app\models\Services;
             ) ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+            <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true, 'readonly' => true,'class' => 'form-control bg-light'])->hint('El monto total es calculado automáticamente') ?>
         </div>
     </div>
         </div>
@@ -77,6 +77,9 @@ use app\models\Services;
                         </tr>
                     </thead>
                     <tbody>
+                        <tr class="empty-service-row">
+                            <td colspan="5" class="text-center">No hay servicios agregados</td>
+                        </tr>
                         <?php 
                         $details = $details ?? [];
                         foreach ($details as $index => $detail): 
@@ -129,7 +132,18 @@ use app\models\Services;
         </div>
     </div>
 
-    <?= $form->field($model, 'custom_footer')->textarea(['rows' => 6]) ?>
+     <div class="card mt-3">
+
+      <div class="card-header">
+            <h3 class="card-title">Texto personalizado</h3>
+        </div>
+        <div class="card-body">
+                <?= $form->field($model, 'custom_footer')->textarea(['rows' => 6])->label(false) ?>
+
+        </div>
+        </div>
+
+        
 
     <div class="form-group mt-3">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary']) ?>
@@ -139,6 +153,7 @@ use app\models\Services;
 </div>
 
 <?php
+
 $js = <<<JS
     // Función para calcular el subtotal
     function calculateSubtotal(row) {
@@ -186,6 +201,13 @@ $js = <<<JS
 
     // Evento para agregar nueva fila
     $('#add-detail').on('click', function() {
+        var quotationTypeId = $('#quotations-quotation_type_id').val();
+        if (!quotationTypeId) {
+            alert('Por favor, seleccione un Tipo de Cotización antes de agregar un detalle.');
+            return; // Detener la ejecución si no se seleccionó un tipo de cotización
+        }
+
+        $('#details-table tbody .empty-service-row').remove();
         var index = $('#details-table tbody tr').length;
         var row = $('<tr>');
         row.html(`
@@ -241,6 +263,31 @@ $js = <<<JS
         updateServices();
         $('#details-table tbody').empty();
         calculateTotal();
+    });
+
+    // Evento para actualizar el precio unitario al seleccionar un servicio
+    $(document).on('change', '.service-select', function () {
+        var \$row = $(this).closest('tr');
+        var serviceId = $(this).val();
+
+        if (serviceId) {
+            // Realizar una solicitud AJAX para obtener el precio del servicio
+            $.get('/quotes/web/quotations/get-service-price', { service_id: serviceId }, function (data) {
+                if (data.success) {
+                    // Actualizar el campo "Precio Unitario" con el precio obtenido
+                    \$row.find('.price-input').val(data.price);
+                    // Recalcular el subtotal
+                    calculateSubtotal(\$row);
+                } else {
+                    alert('No se pudo obtener el precio del servicio.');
+                }
+            });
+        } else {
+            // Si no se selecciona un servicio, limpiar el precio unitario y el subtotal
+            \$row.find('.price-input').val('');
+            \$row.find('.subtotal-input').val('');
+            calculateTotal();
+        }
     });
 
     // Inicializar servicios disponibles

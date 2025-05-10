@@ -218,4 +218,28 @@ class QuotationsController extends Controller
         
         return $result;
     }
+
+    /**
+     * Obtiene el precio de un servicio específico.
+     * @return array
+     */
+    public function actionGetServicePrice()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $serviceId = Yii::$app->request->get('service_id');
+        $service = \app\models\Services::findOne($serviceId);
+
+        if ($service) {
+            return [
+                'success' => true,
+                'price' => $service->price,
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Servicio no encontrado.',
+        ];
+    }
 }
