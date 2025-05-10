@@ -240,10 +240,11 @@ $js = <<<JS
         var id = $(this).data('id');
         if (id) {
             if (confirm('¿Está seguro de eliminar este detalle?')) {
-                $.post('/quotation-details/delete', {id: id}, function(response) {
+                $.post('/quotes/web/quotation-details/delete?id=' + id, function(response) {
                     if (response.success) {
                         $(this).closest('tr').remove();
-                        calculateTotal();
+                        //calculateTotal();
+                        location.reload();
                     }
                 });
             }
