@@ -60,14 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'terms_and_conditions',
                 'format' => 'html', // Cambiado de ntext a html
             ],
-            [
-                'attribute'=> 'show_prices',
-                'label' => 'Mostrar precios',
-                'format' => 'raw', // para que no escape el texto
-                'value' => function ($model) {
-                    return $model->show_prices ? 'Sí' : 'No';
-                },
-            ],
             'created_at',
             'updated_at',
         ],

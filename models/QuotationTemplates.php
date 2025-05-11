@@ -41,10 +41,10 @@ class QuotationTemplates extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['header_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'terms_and_conditions'], 'default', 'value' => null],
+            [['header_text', 'overview_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'terms_and_conditions'], 'default', 'value' => null],
             [['quotation_type_id'], 'required'],
             [['quotation_type_id'], 'integer'],
-            [['header_text', 'footer_text', 'terms_and_conditions'], 'string'],
+            [['header_text', 'overview_text', 'footer_text', 'terms_and_conditions'], 'string'], // Agregado overview_text
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['logo_url'], 'string', 'max' => 500],
             [['background_color'], 'string', 'max' => 20],
@@ -63,6 +63,7 @@ class QuotationTemplates extends \yii\db\ActiveRecord
             'id' => 'ID',
             'quotation_type_id' => 'Tipo de Cotización',
             'header_text' => 'Encabezado',
+            'overview_text' => 'Introducción', // Etiqueta para el nuevo campo
             'footer_text' => 'Pie de Página',
             'logo_url' => 'Logo',
             'logoFile' => 'Logo',

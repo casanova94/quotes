@@ -104,6 +104,25 @@ use kartik\editors\Summernote;
                         'active' => true,
                     ],
                     [
+                        'label' => 'Texto Resumen',
+                        'content' => $form->field($model, 'overview_text')->widget(\dosamigos\ckeditor\CKEditor::class, [
+                            'options' => ['rows' => 6],
+                            'preset' => 'custom',
+                            'clientOptions' => [
+                                'language' => 'es',
+                                'height' => 200,
+                                'toolbar' => [
+                                    ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
+                                    ['NumberedList', 'BulletedList'], // Listas
+                                    ['Link', 'Unlink'], // Enlaces
+                                    ['RemoveFormat'], // Eliminar formato
+                                ],
+                                'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
+                                'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
+                            ],
+                        ])->label(false),
+                    ],
+                    [
                         'label' => 'Pie de Página',
                         'content' => $form->field($model, 'footer_text')->widget(\dosamigos\ckeditor\CKEditor::class, [
                             'options' => ['rows' => 6],

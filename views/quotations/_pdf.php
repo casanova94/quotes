@@ -75,6 +75,11 @@
     </div>
 </div>
 
+<?php if ($template->overview_text): ?>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <?= $template->overview_text ?>
+    </div>
+<?php endif; ?>
 
     <div class="client-info" style="display: none;">
         <h3>Información del Cliente</h3>
@@ -113,6 +118,13 @@
     <h3>Total: <?= Yii::$app->formatter->asCurrency($quotation->total_amount) ?></h3>
 
     <div class="footer">
+        <!-- Renderizar el HTML del custom_footer -->
+        <?php if ($quotation->custom_footer): ?>
+            <div style="margin-bottom: 20px;">
+                <?= $quotation->custom_footer ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Renderizar el HTML del footer_text -->
         <div><?= $template->footer_text ?: 'Gracias por su preferencia.' ?></div>
     </div>

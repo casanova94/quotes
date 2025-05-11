@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
             [
                 'attribute' => 'id',
                 'label' => 'Folio',
@@ -38,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::input('text', 'QuotationsSearch[id]', $searchModel->id, ['class' => 'form-control']),
             ],
-            
             [
                 'attribute' => 'clientName',
                 'value' => 'client.name', 
@@ -67,8 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw', // Permitir HTML en el valor
                 'label' => 'Estado',
             ],
-            //'total_amount:currency',
-            //'custom_footer:ntext',
             [
                 'attribute' => 'created_at',
                 'format' => ['date', 'php:Y-m-d'],
@@ -80,12 +76,23 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['class' => 'form-control'],
                 ]),
             ],
-            //'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Quotations $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'template' => '{view} {update} {delete} {generate-pdf}', // Agregar el botón de PDF al grupo de botones predeterminado
+                'buttons' => [
+                    'generate-pdf' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<i class="fas fa-file-pdf"></i>', 
+                            ['quotations/generate-pdf', 'id' => $model->id], 
+                            [
+                                'title' => 'Generar PDF',
+                                //'class' => 'btn btn-danger btn-sm',
+                                'target' => '_blank', // Abrir en una nueva pestaña
+                                'data-pjax' => '0', // Evitar conflictos con Pjax
+                            ]
+                        );
+                    },
+                ],
             ],
         ],
     ]); ?>

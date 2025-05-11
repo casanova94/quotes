@@ -284,7 +284,9 @@ class QuotationsController extends Controller
         // Obtener el template asociado al tipo de cotización
         $template = QuotationTemplates::findOne(['quotation_type_id' => $quotation->quotation_type_id]);
         if (!$template) {
-            throw new NotFoundHttpException('No se encontró un template para este tipo de cotización.');
+            // Mostrar un mensaje de error si el template no existe
+            Yii::$app->session->setFlash('error', 'No se encontró un template para este tipo de cotización.');
+            return $this->redirect(['view', 'id' => $quotation->id]);
         }
 
         // Renderizar el contenido HTML del PDF
