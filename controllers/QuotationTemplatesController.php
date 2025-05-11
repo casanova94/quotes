@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\filters\AccessControl;
 
 /**
  * QuotationTemplatesController implements the CRUD actions for QuotationTemplates model.
@@ -22,7 +23,15 @@ class QuotationTemplatesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
+            [            'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Allow authenticated users
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

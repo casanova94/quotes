@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\filters\AccessControl;
 
 /**
  * ClientsController implements the CRUD actions for Clients model.
@@ -21,7 +22,16 @@ class ClientsController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
+            [               'access' => [
+                'class' => AccessControl::class,
+                'only' => ['*'], 
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], 
+                    ],
+                ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

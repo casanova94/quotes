@@ -7,6 +7,7 @@ use app\models\QuotationStatusesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * QuotationStatusesController implements the CRUD actions for QuotationStatuses model.
@@ -20,7 +21,15 @@ class QuotationStatusesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
+            [    'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

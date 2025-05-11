@@ -7,6 +7,7 @@ use app\models\TechniciansSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * TechniciansController implements the CRUD actions for Technicians model.
@@ -20,7 +21,15 @@ class TechniciansController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
+            [              'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Allow authenticated users
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

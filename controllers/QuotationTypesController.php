@@ -7,6 +7,7 @@ use app\models\QuotationTypesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * QuotationTypesController implements the CRUD actions for QuotationTypes model.
@@ -20,7 +21,15 @@ class QuotationTypesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [
+            [         'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // Allow authenticated users
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
