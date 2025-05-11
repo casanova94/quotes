@@ -88,6 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->service ? $model->service->name : '';
                         },
                     ],
+                    'description',
                     'quantity',
                     [
                         'attribute' => 'unit_price',

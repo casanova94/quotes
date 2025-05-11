@@ -13,6 +13,7 @@ use yii\bootstrap4\Modal;
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
 /** @var app\models\QuotationDetails[] $details */
+/** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="quotations-form">
@@ -78,6 +79,7 @@ use yii\bootstrap4\Modal;
                     <thead>
                         <tr>
                             <th>Servicio</th>
+                            <th>Descripción</th>
                             <th>Cantidad</th>
                             <th>Precio Unitario</th>
                             <th>Subtotal</th>
@@ -87,7 +89,7 @@ use yii\bootstrap4\Modal;
                     <tbody>
     <?php if (empty($details)): ?>
         <tr class="empty-service-row">
-            <td colspan="5" class="text-center">No hay servicios agregados</td>
+            <td colspan="6" class="text-center">No hay servicios agregados</td>
         </tr>
     <?php else: ?>
         <?php foreach ($details as $index => $detail): ?>
@@ -96,8 +98,15 @@ use yii\bootstrap4\Modal;
                     <?= Html::dropDownList(
                         "QuotationDetails[$index][service_id]",
                         $detail->service_id,
-                        ArrayHelper::map(Services::find()->where(['quotation_type_id' => $model->quotation_type_id])->all(), 'id', 'name'),
-                        ['class' => 'form-control service-select']
+                        ArrayHelper::map(Services::find()->all(), 'id', 'name'),
+                        ['class' => 'form-control service-select', 'prompt' => 'Seleccione un servicio', 'data-index' => $index]
+                    ) ?>
+                </td>
+                <td>
+                    <?= Html::textarea(
+                        "QuotationDetails[$index][description]",
+                        $detail->description,
+                        ['class' => 'form-control description-input', 'rows' => 2, 'id' => "description-$index"]
                     ) ?>
                 </td>
                 <td>
@@ -115,11 +124,9 @@ use yii\bootstrap4\Modal;
                     ) ?>
                 </td>
                 <td>
-                    <?= Html::textInput(
-                        "QuotationDetails[$index][subtotal]",
-                        $detail->subtotal,
-                        ['class' => 'form-control subtotal-input bg-light', 'readonly' => true]
-                    ) ?>
+                    <span class="subtotal" id="subtotal-<?= $index ?>">
+                        <?= Yii::$app->formatter->asCurrency($detail->subtotal) ?>
+                    </span>
                 </td>
                 <td>
                     <?= Html::button('<i class="fas fa-trash"></i>', [
@@ -168,17 +175,18 @@ $js = <<<JS
         var quantity = parseFloat(row.find('.quantity-input').val()) || 0;
         var price = parseFloat(row.find('.price-input').val()) || 0;
         var subtotal = quantity * price;
-        row.find('.subtotal-input').val(subtotal.toFixed(2));
-        calculateTotal();
+        row.find('.subtotal').text(subtotal.toFixed(2)); // Actualizar el texto del subtotal
+        calculateTotal(); // Recalcular el total general
     }
 
-    // Función para calcular el total
+    // Función para calcular el total general
     function calculateTotal() {
         var total = 0;
-        $('.subtotal-input').each(function() {
-            total += parseFloat($(this).val()) || 0;
+        $('#details-table tbody tr').each(function () {
+            var subtotal = parseFloat($(this).find('.subtotal').text()) || 0;
+            total += subtotal;
         });
-        $('#quotations-total_amount').val(total.toFixed(2));
+        $('#quotations-total_amount').val(total.toFixed(2)); // Actualizar el campo de monto total
     }
 
     // Función para actualizar los servicios disponibles
@@ -213,7 +221,7 @@ $js = <<<JS
 
 
     // Evento para agregar nueva fila
-    $('#add-detail').on('click', function() {
+    $('#add-detail').on('click', function () {
         var quotationTypeId = $('#quotations-quotation_type_id').val();
         if (!quotationTypeId) {
             alert('Por favor, seleccione un Tipo de Cotización antes de agregar un detalle.');
@@ -222,30 +230,34 @@ $js = <<<JS
 
         $('#details-table tbody .empty-service-row').remove();
         var index = $('#details-table tbody tr').length;
-        var row = $('<tr>');
-        row.html(`
-            <td>
-                <select name="QuotationDetails[\${index}][service_id]" class="form-control service-select">
-                    <option value="" disabled selected>Elegir servicio</option>
-                </select>
-            </td>
-            <td>
-                <input type="number" name="QuotationDetails[\${index}][quantity]" class="form-control quantity-input" min="1" value="1">
-            </td>
-            <td>
-                <input type="number" name="QuotationDetails[\${index}][unit_price]" class="form-control price-input" step="0.01" min="0" value="0">
-            </td>
-            <td>
-                <input type="text" name="QuotationDetails[\${index}][subtotal]" class="form-control subtotal-input" readonly>
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger btn-sm delete-row">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
+        var row = $(`
+            <tr>
+                <td>
+                    <select name="QuotationDetails[\${index}][service_id]" class="form-control service-select" data-index="\${index}">
+                        <option value="" disabled selected>Elegir servicio</option>
+                    </select>
+                </td>
+                <td>
+                    <textarea name="QuotationDetails[\${index}][description]" class="form-control description-input" rows="2" id="description-\${index}"></textarea>
+                </td>
+                <td>
+                    <input type="number" name="QuotationDetails[\${index}][quantity]" class="form-control quantity-input" min="1" value="1">
+                </td>
+                <td>
+                    <input type="number" name="QuotationDetails[\${index}][unit_price]" class="form-control price-input" step="0.01" min="0" value="0">
+                </td>
+                <td>
+                    <span class="subtotal" id="subtotal-\${index}">0.00</span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm delete-row">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
         `);
         $('#details-table tbody').append(row);
-        updateServices();
+        updateServices(); // Actualizar los servicios disponibles en el nuevo dropdown
     });
 
     // Evento para eliminar fila
@@ -291,6 +303,11 @@ $js = <<<JS
         calculateSubtotal($(this).closest('tr'));
     });
 
+    // Eventos para calcular el subtotal al cambiar la cantidad o el precio unitario
+    $(document).on('change', '.quantity-input, .price-input', function () {
+        calculateSubtotal($(this).closest('tr'));
+    });
+
     // Evento para actualizar servicios cuando cambia el tipo de cotización
     $('#quotations-quotation_type_id').on('change', function() {
         updateServices();
@@ -328,6 +345,27 @@ $js = <<<JS
             \$row.find('.price-input').val('');
             \$row.find('.subtotal-input').val('');
             calculateTotal();
+        }
+    });
+
+    // Evento para actualizar la descripción al seleccionar un servicio
+    $(document).on('change', '.service-select', function () {
+        var \$row = $(this).closest('tr');
+        var serviceId = $(this).val();
+
+        if (serviceId) {
+            // Realizar una solicitud AJAX para obtener la descripción del servicio
+            $.get('/quotes/web/quotations/get-service-description', { service_id: serviceId }, function (data) {
+                if (data.success) {
+                    // Actualizar el campo "Descripción" con la descripción obtenida
+                    \$row.find('.description-input').val(data.description);
+                } else {
+                    alert('No se pudo obtener la descripción del servicio.');
+                }
+            });
+        } else {
+            // Si no se selecciona un servicio, limpiar la descripción
+            \$row.find('.description-input').val('');
         }
     });
 

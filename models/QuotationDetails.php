@@ -39,6 +39,7 @@ class QuotationDetails extends \yii\db\ActiveRecord
             [['quotation_id', 'service_id', 'quantity', 'unit_price'], 'required'],
             [['quotation_id', 'service_id', 'quantity'], 'integer'],
             [['unit_price', 'subtotal'], 'number'],
+            [['description'], 'string'], // Nueva regla para el campo description
             [['quotation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quotations::class, 'targetAttribute' => ['quotation_id' => 'id']],
             [['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Services::class, 'targetAttribute' => ['service_id' => 'id']],
         ];
@@ -58,6 +59,7 @@ class QuotationDetails extends \yii\db\ActiveRecord
             'subtotal' => 'Subtotal',
             'quotationName' => 'Cotización',
             'serviceName' => 'Servicio',
+            'description' => 'Descripción', // Etiqueta para el nuevo campo
         ];
     }
 

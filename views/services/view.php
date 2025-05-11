@@ -32,7 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'unit',
             'price',
-            'quotationType.name',
+            [
+                'attribute' => 'quotation_type_id',
+                'value' => function ($model) {
+                    return $model->quotationType->name; // Asumiendo que tienes una relación con QuotationTypes
+                },
+            ],
+            'description:ntext', 
         ],
     ]) ?>
 

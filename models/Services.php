@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $name
+ * @property string|null $description
  * @property string $unit
  * @property float $price
  * @property int $quotation_type_id
@@ -18,8 +19,6 @@ use Yii;
  */
 class Services extends \yii\db\ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -35,6 +34,7 @@ class Services extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'unit', 'price', 'quotation_type_id'], 'required'],
+            [['description'], 'string'],
             [['price'], 'number'],
             [['quotation_type_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
@@ -51,6 +51,7 @@ class Services extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Nombre',
+            'description' => 'Descripción',
             'unit' => 'Unidad',
             'price' => 'Precio',
             'quotation_type_id' => 'Tipo de Cotización',

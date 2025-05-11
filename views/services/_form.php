@@ -16,9 +16,11 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) // Nuevo campo para la descripción ?>
+
     <?= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'price')->textInput(['type' => 'number', 'step' => '0.01']) ?>
 
     <?= $form->field($model, 'quotation_type_id')->dropDownList(
         ArrayHelper::map(QuotationTypes::find()->all(), 'id', 'name'),

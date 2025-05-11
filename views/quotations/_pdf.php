@@ -89,7 +89,8 @@
         <thead>
             <tr>
                 <th>Servicio</th>
-                <th>Unidad</th> <!-- Nueva columna para la unidad -->
+                <th>Descripción</th> <!-- Nueva columna para la descripción -->
+                <th>Unidad</th>
                 <th>Cantidad</th>
                 <th>Precio Unitario</th>
                 <th>Subtotal</th>
@@ -99,7 +100,8 @@
             <?php foreach ($quotation->quotationDetails as $detail): ?>
                 <tr>
                     <td><?= $detail->service->name ?></td>
-                    <td><?= $detail->service->unit ?></td> <!-- Mostrar la unidad del servicio -->
+                    <td><?= $detail->description ?: 'Sin descripción' ?></td> <!-- Mostrar descripción personalizada -->
+                    <td><?= $detail->service->unit ?></td>
                     <td><?= $detail->quantity ?></td>
                     <td><?= Yii::$app->formatter->asCurrency($detail->unit_price) ?></td>
                     <td><?= Yii::$app->formatter->asCurrency($detail->subtotal) ?></td>

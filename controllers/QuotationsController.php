@@ -100,6 +100,7 @@ class QuotationsController extends Controller
                             $quotationDetail->quantity = $detail['quantity'];
                             $quotationDetail->unit_price = $detail['unit_price'];
                             $quotationDetail->subtotal = $detail['quantity'] * $detail['unit_price'];
+                            $quotationDetail->description = $detail['description']; // Guardar la descripción personalizada
                             if (!$quotationDetail->save()) {
                                 throw new \Exception('Error al guardar el detalle');
                             }
@@ -149,6 +150,7 @@ class QuotationsController extends Controller
                             $quotationDetail->quantity = $detail['quantity'];
                             $quotationDetail->unit_price = $detail['unit_price'];
                             $quotationDetail->subtotal = $detail['quantity'] * $detail['unit_price'];
+                            $quotationDetail->description = $detail['description']; // Guardar la descripción personalizada
                             if (!$quotationDetail->save()) {
                                 throw new \Exception('Error al guardar el detalle');
                             }
@@ -246,6 +248,30 @@ class QuotationsController extends Controller
     }
 
     /**
+     * Obtiene la descripción de un servicio específico.
+     * @return array
+     */
+    public function actionGetServiceDescription()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $serviceId = Yii::$app->request->get('service_id');
+        $service = \app\models\Services::findOne($serviceId);
+
+        if ($service) {
+            return [
+                'success' => true,
+                'description' => $service->description,
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Servicio no encontrado.',
+        ];
+    }
+
+    /**
      * Generates a PDF for a specific quotation.
      * @param int $id ID
      * @return \yii\web\Response
@@ -284,7 +310,7 @@ class QuotationsController extends Controller
         // Configurar el pie de página con los términos y condiciones
         $mpdf->SetHTMLFooter('
             <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
-                ' . nl2br(htmlspecialchars($template->terms_and_conditions)) . '
+                ' . nl2br($template->terms_and_conditions) . '
             </div>
         ');
 
