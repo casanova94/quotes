@@ -7,14 +7,12 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
 
-$this->title = 'Cotización #' . $model->id;
+$this->title = 'Cotización #' . str_pad($model->id, 6, '0', STR_PAD_LEFT);
 $this->params['breadcrumbs'][] = ['label' => 'Cotizaciones', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="quotations-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p> 
         <?= Html::a('Generar PDF', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-secondary', 'target' => '_blank']) ?>
@@ -36,10 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
+                    [
+                        'attribute' => 'id',
+                        'label' => 'Folio',
+                        'value' => function ($model) {
+                            return '#' . str_pad($model->id, 6, '0', STR_PAD_LEFT);
+                        },
+                    ],
                     [
                         'attribute' => 'client_id',
-                        'value' => $model->client ? $model->client->name : '',
+                        'format' => 'raw', // Permitir HTML en el valor
+                        'value' => $model->client ? Html::a(
+                            $model->client->name,
+                            ['clients/view', 'id' => $model->client->id],
+                            ['class' => 'btn btn-link px-0 mx-0']
+                        ) : '',
                     ],
                     [
                         'attribute' => 'quotation_type_id',
@@ -71,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => new \yii\data\ActiveDataProvider([
                     'query' => $model->getQuotationDetails(),
                 ]),
+                'showFooter' => true, // Mostrar el pie de tabla
                 'columns' => [
                     [
                         'attribute' => 'service_id',
@@ -79,8 +89,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     'quantity',
-                    'unit_price',
-                    'subtotal',
+                    [
+                        'attribute' => 'unit_price',
+                        'value' => function ($model) {
+                            return Yii::$app->formatter->asCurrency($model->unit_price);
+                        },
+                    ],
+                    [
+                        'attribute' => 'subtotal',
+                        'footer' => Yii::$app->formatter->asCurrency(
+                            $model->getQuotationDetails()->sum('subtotal')
+                        ), // Calcular el total de la columna "subtotal"
+                    ]
                 ],
             ]) ?>
         </div>

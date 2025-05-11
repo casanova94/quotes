@@ -6,14 +6,13 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\QuotationTemplates $model */
 
-$this->title = $model->id;
+$this->title = $model->quotationType->name;
 $this->params['breadcrumbs'][] = ['label' => 'Formatos de cotización', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="quotation-templates-view">
 
-    <h1 class="d-none"><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

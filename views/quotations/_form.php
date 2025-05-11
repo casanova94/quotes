@@ -20,9 +20,9 @@ use yii\bootstrap4\Modal;
 
      <div class="card mt-3">
 
-   <div class="card-header d-flex justify-content-between align-items-center">
-    <h3 class="card-title">Datos Generales</h3>
-    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#createClientModal">
+  <div class="card-header d-flex align-items-center">
+    <h3 class="card-title mb-0">Datos Generales</h3>
+    <button type="button" class="btn btn-sm btn-success ml-auto" data-toggle="modal" data-target="#createClientModal">
         Nuevo cliente
     </button>
 </div>

@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="clients-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,12 +28,43 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           // 'id',
             'name',
             'email:email',
-            'phone',
+            [
+                'attribute' => 'phone',
+                'format' => 'raw', // Permitir HTML en el valor
+                'value' => function ($model) {
+                    return Html::a(
+                        $model->phone,
+                        'tel:' . $model->phone,
+                        ['class' => 'btn btn-link px-0 mx-0']
+                    );
+                },
+            ],
             'address:ntext',
             'created_at',
+        ],
+    ]) ?>
+
+    <h3>Cotizaciones del Cliente</h3>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            [
+                'label' => 'Cotizaciones',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $output = '';
+                    foreach ($model->quotations as $quotation) {
+                        $output .= Html::a(
+                            'Cotización #' . str_pad($quotation->id, 6, '0', STR_PAD_LEFT),
+                            ['quotations/view', 'id' => $quotation->id],
+                            ['class' => 'btn btn-link']
+                        ) . '<br>';
+                    }
+                    return $output ?: 'No hay cotizaciones asociadas.';
+                },
+            ],
         ],
     ]) ?>
 

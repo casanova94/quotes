@@ -15,9 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="clients-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
+    <p class="text-right">
         <?= Html::a('Agregar cliente', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

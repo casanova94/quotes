@@ -122,7 +122,11 @@ class ClientsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', 'No se puede eliminar este cliente porque tiene cotizaciones asociadas.');
+        }
 
         return $this->redirect(['index']);
     }

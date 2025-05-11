@@ -41,8 +41,31 @@
                     [
                         'label' => 'Configuración',
                         'items' => [
-                            ['label' => 'Level2', 'iconStyle' => 'far'],
-                            ['label' => 'Level2', 'iconStyle' => 'far']
+                            [
+                                'label' => 'Tipos de Cotización',
+                                'icon' => 'file-alt',
+                                'url' => ['/quotation-types/index'],
+                            ],
+                            [
+                                'label' => 'Estados de Cotización',
+                                'icon' => 'check-circle',
+                                'url' => ['/quotation-statuses/index'],
+                            ],
+                            [
+                                'label' => 'Plantillas de Cotización',
+                                'icon' => 'file-code',
+                                'url' => ['/quotation-templates/index'],
+                            ],
+                            [
+                                'label' => 'Servicios',
+                                'icon' => 'cogs',
+                                'url' => ['/services/index'],
+                            ],
+                            [
+                                'label' => 'Técnicos',
+                                'icon' => 'user-cog',
+                                'url' => ['/technicians/index'],
+                            ],
                         ],
                         'icon' => 'cog',
                     ],

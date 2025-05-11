@@ -15,9 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-templates-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+    
+    <p class="text-right">
         <?= Html::a('Agregar formato', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

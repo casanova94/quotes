@@ -36,6 +36,14 @@ use yii\bootstrap4\Breadcrumbs;
 
     <!-- Main content -->
     <div class="content">
+            <?php foreach (Yii::$app->session->getAllFlashes() as $type => $message): ?>
+        <?= \hail812\adminlte\widgets\Alert::widget([
+                'title' => 'Aviso',
+                'type' => $type === 'error' ? 'danger' : $type,
+                'body' => $message,
+            ]) ?>
+
+     <?php endforeach; ?>
         <?= $content ?><!-- /.container-fluid -->
     </div>
     <!-- /.content -->

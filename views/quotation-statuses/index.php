@@ -15,9 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-statuses-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+    <p class="text-right">
         <?= Html::a('Agregar estado', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

@@ -36,6 +36,7 @@ class Clients extends \yii\db\ActiveRecord
         return [
             [['email', 'phone', 'address'], 'default', 'value' => null],
             [['name'], 'required'],
+            ['email', 'email'],
             [['address'], 'string'],
             [['created_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['name', 'email'], 'string', 'max' => 255],

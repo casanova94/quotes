@@ -15,9 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotation-types-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
+    <p class="text-right">
         <?= Html::a('Agregar tipo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

@@ -16,9 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="quotations-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+    <p  class="text-right">
         <?= Html::a('Crear Cotización', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -58,7 +56,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'statusName',
-                'value' => 'status.name', 
+                'value' => function ($model) {
+                    $status = $model->status;
+                    if ($status) {
+                        $color = $status->color_code ?: '#000'; // Usar el color guardado o negro por defecto
+                        return "<span style='color: {$color}; font-weight: bold;'>{$status->name}</span>";
+                    }
+                    return 'Desconocido';
+                },
+                'format' => 'raw', // Permitir HTML en el valor
                 'label' => 'Estado',
             ],
             //'total_amount:currency',
