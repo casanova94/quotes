@@ -65,8 +65,13 @@
     </div>
 </div>
 
-<div style="margin-top: 20px;">
-    <p>Estimado/a <?= $quotation->client->name ?></p>
+<div style="margin-top: 20px;margin-bottom: 20px;">
+      <div style="width: 50%; float: left;text-align: left;">
+       Estimado(a) <?= $quotation->client->name ?>,
+    </div>
+    <div style="width: 50%; float: right; text-align: right;">
+            Fecha: <?= Yii::$app->formatter->asDate($quotation->created_at) ?>  
+    </div>
 </div>
 <?php if ($template->overview_text): ?>
     <div>
