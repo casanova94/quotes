@@ -27,7 +27,11 @@
             <?php
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
-                   
+                     [
+                        'label' => 'Inicio',
+                        'icon' => 'home',
+                        'url' => ['/site/index'],
+                    ],
                     [
                         'label' => 'Clientes',
                         'icon' => 'user',   
