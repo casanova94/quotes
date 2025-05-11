@@ -4,9 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\QuotationTypes;
 use yii\helpers\ArrayHelper;
-use kartik\switchinput\SwitchInput;
 use kartik\color\ColorInput;
-use kartik\editors\Summernote;
 
 /** @var yii\web\View $this */
 /** @var app\models\QuotationTemplates $model */
@@ -95,8 +93,10 @@ use kartik\editors\Summernote;
                                     ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
                                     ['NumberedList', 'BulletedList'], // Listas
                                     ['Link', 'Unlink'], // Enlaces
+                                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], // Herramientas de alineación
                                     ['RemoveFormat'], // Eliminar formato
                                 ],
+                                'extraPlugins' => 'justify', // Habilitar el plugin de alineación
                                 'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
                                 'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
@@ -115,8 +115,10 @@ use kartik\editors\Summernote;
                                     ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
                                     ['NumberedList', 'BulletedList'], // Listas
                                     ['Link', 'Unlink'], // Enlaces
+                                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], // Herramientas de alineación
                                     ['RemoveFormat'], // Eliminar formato
                                 ],
+                                'extraPlugins' => 'justify', // Habilitar el plugin de alineación
                                 'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
                                 'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
@@ -134,8 +136,10 @@ use kartik\editors\Summernote;
                                     ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
                                     ['NumberedList', 'BulletedList'], // Listas
                                     ['Link', 'Unlink'], // Enlaces
+                                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], // Herramientas de alineación
                                     ['RemoveFormat'], // Eliminar formato
                                 ],
+                                'extraPlugins' => 'justify', // Habilitar el plugin de alineación
                                 'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
                                 'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
@@ -153,8 +157,10 @@ use kartik\editors\Summernote;
                                     ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
                                     ['NumberedList', 'BulletedList'], // Listas
                                     ['Link', 'Unlink'], // Enlaces
+                                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], // Herramientas de alineación
                                     ['RemoveFormat'], // Eliminar formato
                                 ],
+                                'extraPlugins' => 'justify', // Habilitar el plugin de alineación
                                 'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
                                 'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],

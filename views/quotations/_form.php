@@ -153,7 +153,25 @@ use yii\bootstrap4\Modal;
             <h3 class="card-title">Texto personalizado</h3>
         </div>
         <div class="card-body">
-                <?= $form->field($model, 'custom_footer')->textarea(['rows' => 6])->label(false)->hint('Este texto aparecerá en la parte inferior de la cotización') ?>
+                <?= 
+                $form->field($model, 'custom_footer')->widget(\dosamigos\ckeditor\CKEditor::class, [
+                            'options' => ['rows' => 6],
+                            'preset' => 'custom',
+                            'clientOptions' => [
+                                'language' => 'es',
+                                'height' => 200,
+                                'toolbar' => [
+                                    ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
+                                    ['NumberedList', 'BulletedList'], // Listas
+                                    ['Link', 'Unlink'], // Enlaces
+                                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'], // Herramientas de alineación
+                                    ['RemoveFormat'], // Eliminar formato
+                                ],
+                                'extraPlugins' => 'justify', // Habilitar el plugin de alineación
+                                'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
+                                'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
+                            ],
+                        ])->label(false)->hint('Este texto aparecerá en la parte inferior de la cotización') ?>
 
         </div>
         </div>

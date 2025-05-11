@@ -21,13 +21,6 @@
             padding: 0;
         }
 
-        .header {
-            margin-bottom: 40px;
-        }
-
-        .footer {
-            margin-top: 100px;
-        }
 
         .details-table {
             width: 100%;
@@ -45,20 +38,17 @@
             text-align: left;
         }
 
-        .client-info {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
+        .footer {
+            position: fixed;
+            bottom: 50;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background-color:
+                <?= $template->background_color ?: '#ffffff' ?>
+            ;
         }
 
-        .client-info h3 {
-            margin-top: 0;
-        }
-
-        .client-info p {
-            margin: 5px 0;
-        }
     </style>
 </head>
 
@@ -70,26 +60,22 @@
             <img src="<?= Yii::getAlias('@webroot') . '/' . $template->logo_url ?>" alt="Logo" style="height: 200px;">
         <?php endif; ?>
     </div>
-    <div style="width: 50%; float: right; text-align: right;">
+    <div style="width: 50%; float: right;">
         <?= $template->header_text ?: '<h3 style="margin: 0;">Cotización</h3>' ?>
     </div>
 </div>
 
+<div style="margin-top: 20px;">
+    <p>Estimado/a <?= $quotation->client->name ?></p>
+</div>
 <?php if ($template->overview_text): ?>
-    <div style="margin-top: 20px; margin-bottom: 20px;">
+    <div>
         <?= $template->overview_text ?>
     </div>
 <?php endif; ?>
 
-    <div class="client-info" style="display: none;">
-        <h3>Información del Cliente</h3>
-        <p><strong>Nombre:</strong> <?= $quotation->client->name ?></p>
-        <p><strong>Teléfono:</strong> <?= $quotation->client->phone ?: 'No disponible' ?></p>
-        <!--        <p><strong>Dirección:</strong> <?= $quotation->client->address ?: 'No disponible' ?></p>-->
-        <p><strong>Fecha:</strong> <?= Yii::$app->formatter->asDate($quotation->created_at) ?></p>
-    </div>
   
-    <h3>Detalles de la Cotización</h3>
+
     <table class="details-table">
         <thead>
             <tr>
@@ -112,21 +98,27 @@
                     <td><?= Yii::$app->formatter->asCurrency($detail->subtotal) ?></td>
                 </tr>
             <?php endforeach; ?>
+            <tr>
+                <td colspan="4"></td>
+                <td ><strong>Total:</strong></td>
+                <td><strong><?=Yii::$app->formatter->asCurrency($quotation->total_amount) ?></strong></td>
+            </tr>
         </tbody>
     </table>
 
-    <h3>Total: <?= Yii::$app->formatter->asCurrency($quotation->total_amount) ?></h3>
 
-    <div class="footer">
-        <!-- Renderizar el HTML del custom_footer -->
-        <?php if ($quotation->custom_footer): ?>
-            <div style="margin-bottom: 20px;">
+            <?php if ($quotation->custom_footer): ?>
+            <div class="custom-footer">
                 <?= $quotation->custom_footer ?>
             </div>
         <?php endif; ?>
 
+    <div class="footer">
+
         <!-- Renderizar el HTML del footer_text -->
-        <div><?= $template->footer_text ?: 'Gracias por su preferencia.' ?></div>
+        <div class="footer-text">
+            <?= $template->footer_text ?: 'Gracias por su preferencia.' ?>
+        </div>
     </div>
 </body>
 

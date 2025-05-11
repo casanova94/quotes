@@ -298,17 +298,6 @@ class QuotationsController extends Controller
         // Configurar MPDF
         $mpdf = new Mpdf();
 
-        $mpdf->SetHTMLHeader('
-            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
-                <div style="text-align: left;">
-                    Fecha: ' . Yii::$app->formatter->asDate($quotation->created_at, 'php:d/m/Y') . '
-                </div>
-                <div style="text-align: right;">
-                    Folio: ' . str_pad($template->id, 6, '0', STR_PAD_LEFT) . '
-                </div>
-            </div>
-        ');
-
         // Configurar el pie de página con los términos y condiciones
         $mpdf->SetHTMLFooter('
             <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
