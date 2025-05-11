@@ -7,43 +7,51 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-
-
-        <!-- SidebarSearch Form -->
-        <!-- href be escaped -->
-        <!-- <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div> -->
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <?php
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
-                     [
+                    [
                         'label' => 'Inicio',
                         'icon' => 'home',
                         'url' => ['/site/index'],
                     ],
                     [
-                        'label' => 'Clientes',
-                        'icon' => 'user',   
-                        'url' => ['/clients/index']
-                    ],
-                       [
                         'label' => 'Cotizaciones',
-                        'icon' => 'file',   
-                        'url' => ['/quotations/index']
+                        'icon' => 'file',
+                        'items' => [
+                            [
+                                'label' => 'Crear Cotización',
+                                'icon' => 'plus',
+                                'url' => ['/quotations/create'],
+                            ],
+                            [
+                                'label' => 'Ver Cotizaciones',
+                                'icon' => 'eye',
+                                'url' => ['/quotations/index'],
+                            ],
+                        ]
+                    ],
+                    [
+                        'label' => 'Clientes',
+                        'icon' => 'user',
+                        'items' => [
+                            [
+                                'label' => 'Crear Cliente',
+                                'icon' => 'plus',
+                                'url' => ['/clients/create'],
+                            ],
+                            [
+                                'label' => 'Ver Clientes',
+                                'icon' => 'eye',
+                                'url' => ['/clients/index'],
+                            ],
+                        ],
                     ],
                     [
                         'label' => 'Configuración',
+                        'icon' => 'cog',
                         'items' => [
                             [
                                 'label' => 'Tipos de Cotización',
@@ -71,7 +79,6 @@
                                 'url' => ['/technicians/index'],
                             ],
                         ],
-                        'icon' => 'cog',
                     ],
                 ],
             ]);
