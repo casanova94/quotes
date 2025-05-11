@@ -41,19 +41,16 @@ class QuotationTemplates extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['header_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'default_comments', 'terms_and_conditions'], 'default', 'value' => null],
-            [['show_prices'], 'default', 'value' => 1],
+            [['header_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'terms_and_conditions'], 'default', 'value' => null],
             [['quotation_type_id'], 'required'],
-            [['quotation_type_id', 'show_prices'], 'integer'],
-            [['header_text', 'footer_text', 'default_comments', 'terms_and_conditions'], 'string'],
+            [['quotation_type_id'], 'integer'],
+            [['header_text', 'footer_text', 'terms_and_conditions'], 'string'],
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['logo_url'], 'string', 'max' => 500],
             [['background_color'], 'string', 'max' => 20],
             [['font_family'], 'string', 'max' => 100],
             [['quotation_type_id'], 'unique'],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
-            [['quotation_type_id', 'header_text', 'footer_text', 'background_color', 'font_family', 'default_comments', 'terms_and_conditions','logoFile'], 'safe'],
-            //[['logoFile'], 'file', 'extensions' => 'jpg, jpeg, png, gif', 'maxSize' => 2048 * 1024], // Validación del archivo
         ];
     }
 
@@ -65,15 +62,13 @@ class QuotationTemplates extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'quotation_type_id' => 'Tipo de Cotización',
-            'header_text' => 'Información de la empresa',
-            'footer_text' => 'Texto despues de la tabla',
+            'header_text' => 'Encabezado',
+            'footer_text' => 'Pie de Página',
             'logo_url' => 'Logo',
             'logoFile' => 'Logo',
             'background_color' => 'Color de Fondo',
             'font_family' => 'Familia de Fuente',
-            'default_comments' => 'Comentarios por Defecto',
             'terms_and_conditions' => 'Términos y Condiciones',
-            'show_prices' => 'Mostrar Precios',
             'created_at' => 'Fecha de Creación',
             'updated_at' => 'Fecha de Actualización',
             'quotationTypeName' => 'Tipo de Cotización',

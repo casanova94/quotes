@@ -50,15 +50,6 @@ use kartik\editors\Summernote;
                         '"Trebuchet MS", sans-serif' => 'Trebuchet MS',
                         '"Comic Sans MS", cursive, sans-serif' => 'Comic Sans MS',
                     ], ['prompt' => 'Selecciona una fuente']) ?>
-
-                    <?= $form->field($model, 'show_prices')->widget(SwitchInput::class, [
-                        'pluginOptions' => [
-                            'onText' => 'Sí',
-                            'offText' => 'No',
-                            'onColor' => 'success', // verde
-                            'offColor' => 'danger', // rojo
-                        ]
-                    ]); ?>
                 </div>
 
                 <!-- Segunda columna: Campo de logo -->
@@ -96,46 +87,59 @@ use kartik\editors\Summernote;
                         'label' => 'Encabezado',
                         'content' => $form->field($model, 'header_text')->widget(\dosamigos\ckeditor\CKEditor::class, [
                             'options' => ['rows' => 6],
-                            'preset' => 'basic',
+                            'preset' => 'custom',
                             'clientOptions' => [
                                 'language' => 'es',
                                 'height' => 200,
+                                'toolbar' => [
+                                    ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
+                                    ['NumberedList', 'BulletedList'], // Listas
+                                    ['Link', 'Unlink'], // Enlaces
+                                    ['RemoveFormat'], // Eliminar formato
+                                ],
+                                'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
+                                'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
-                        ]),
+                        ])->label(false),
                         'active' => true,
                     ],
                     [
                         'label' => 'Pie de Página',
                         'content' => $form->field($model, 'footer_text')->widget(\dosamigos\ckeditor\CKEditor::class, [
                             'options' => ['rows' => 6],
-                            'preset' => 'basic',
+                            'preset' => 'custom',
                             'clientOptions' => [
                                 'language' => 'es',
                                 'height' => 200,
+                                'toolbar' => [
+                                    ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
+                                    ['NumberedList', 'BulletedList'], // Listas
+                                    ['Link', 'Unlink'], // Enlaces
+                                    ['RemoveFormat'], // Eliminar formato
+                                ],
+                                'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
+                                'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
-                        ]),
-                    ],
-                    [
-                        'label' => 'Comentarios Predeterminados',
-                        'content' => $form->field($model, 'default_comments')->widget(\dosamigos\ckeditor\CKEditor::class, [
-                            'options' => ['rows' => 6],
-                            'preset' => 'basic',
-                            'clientOptions' => [
-                                'language' => 'es',
-                                'height' => 200,
-                            ],
-                        ]),
+                        ])->label(false),
                     ],
                     [
                         'label' => 'Términos y Condiciones',
                         'content' => $form->field($model, 'terms_and_conditions')->widget(\dosamigos\ckeditor\CKEditor::class, [
                             'options' => ['rows' => 6],
-                            'preset' => 'basic',
+                            'preset' => 'custom',
                             'clientOptions' => [
                                 'language' => 'es',
                                 'height' => 200,
+                                'toolbar' => [
+                                    ['Bold', 'Italic', 'Underline'], // Herramientas básicas de formato
+                                    ['NumberedList', 'BulletedList'], // Listas
+                                    ['Link', 'Unlink'], // Enlaces
+                                    ['RemoveFormat'], // Eliminar formato
+                                ],
+                                'removePlugins' => 'elementspath', // Ocultar la ruta de elementos
+                                'resize_enabled' => false, // Deshabilitar el redimensionamiento del editor
                             ],
-                        ]),
+                        ])->label(false),
                     ],
                 ],
             ]) ?>

@@ -17,8 +17,8 @@ class QuotationTemplatesSearch extends QuotationTemplates
     public function rules()
     {
         return [
-            [['id', 'quotation_type_id', 'show_prices'], 'integer'],
-            [['header_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'default_comments', 'terms_and_conditions', 'created_at', 'updated_at', 'quotationTypeName'], 'safe'],
+            [['id', 'quotation_type_id'], 'integer'],
+            [['header_text', 'footer_text', 'logo_url', 'background_color', 'font_family', 'terms_and_conditions', 'created_at', 'updated_at', 'quotationTypeName'], 'safe'],
         ];
     }
 
@@ -35,9 +35,7 @@ class QuotationTemplatesSearch extends QuotationTemplates
             'logo_url' => 'URL del Logo',
             'background_color' => 'Color de Fondo',
             'font_family' => 'Familia de Fuente',
-            'default_comments' => 'Comentarios por Defecto',
             'terms_and_conditions' => 'Términos y Condiciones',
-            'show_prices' => 'Mostrar Precios',
             'created_at' => 'Fecha de Creación',
             'updated_at' => 'Fecha de Actualización',
             'quotationTypeName' => 'Tipo de Cotización',
@@ -80,9 +78,7 @@ class QuotationTemplatesSearch extends QuotationTemplates
                     'logo_url',
                     'background_color',
                     'font_family',
-                    'default_comments',
                     'terms_and_conditions',
-                    'show_prices',
                     'created_at',
                     'updated_at',
                 ],
@@ -101,7 +97,6 @@ class QuotationTemplatesSearch extends QuotationTemplates
         $query->andFilterWhere([
             'quotation_templates.id' => $this->id,
             'quotation_templates.quotation_type_id' => $this->quotation_type_id,
-            'quotation_templates.show_prices' => $this->show_prices,
             'quotation_templates.created_at' => $this->created_at,
             'quotation_templates.updated_at' => $this->updated_at,
         ]);
@@ -111,7 +106,6 @@ class QuotationTemplatesSearch extends QuotationTemplates
             ->andFilterWhere(['like', 'quotation_templates.logo_url', $this->logo_url])
             ->andFilterWhere(['like', 'quotation_templates.background_color', $this->background_color])
             ->andFilterWhere(['like', 'quotation_templates.font_family', $this->font_family])
-            ->andFilterWhere(['like', 'quotation_templates.default_comments', $this->default_comments])
             ->andFilterWhere(['like', 'quotation_templates.terms_and_conditions', $this->terms_and_conditions])
             ->andFilterWhere(['like', 'quotation_types.name', $this->quotationTypeName]);
 
