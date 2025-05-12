@@ -88,3 +88,11 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<style>
+    @media (max-width: 768px) {
+        .main-sidebar .nav-sidebar .nav-link {
+            font-size: 20px; /* Aumenta el tamaño de la fuente */
+        }
+    }
+</style>
