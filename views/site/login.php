@@ -26,16 +26,7 @@ use yii\helpers\Html;
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 
         <div class="row">
-            <div class="col-8">
-                <?= $form->field($model, 'rememberMe')->checkbox([
-                    'template' => '<div class="icheck-primary">{input}{label}</div>',
-                    'labelOptions' => [
-                        'class' => ''
-                    ],
-                    'uncheck' => null
-                ]) ?>
-            </div>
-            <div class="col-4">
+            <div class="offset-4 col-4">
                 <?= Html::submitButton('Entrar', ['class' => 'btn btn-primary btn-block']) ?>
             </div>
         </div>
