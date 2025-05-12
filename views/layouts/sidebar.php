@@ -50,6 +50,22 @@
                         ],
                     ],
                     [
+                        'label' => 'Técnicos',
+                        'icon' => 'user-cog',
+                        'items' => [
+                            [
+                                'label' => 'Crear Técnico',
+                                'icon' => 'plus',
+                                'url' => ['/technicians/create'],
+                            ],
+                            [
+                                'label' => 'Ver Técnicos',
+                                'icon' => 'eye',
+                                'url' => ['/technicians/index'],
+                            ],
+                        ],
+                    ],
+                    [
                         'label' => 'Configuración',
                         'icon' => 'cog',
                         'items' => [
@@ -72,11 +88,6 @@
                                 'label' => 'Servicios',
                                 'icon' => 'cogs',
                                 'url' => ['/services/index'],
-                            ],
-                            [
-                                'label' => 'Técnicos',
-                                'icon' => 'user-cog',
-                                'url' => ['/technicians/index'],
                             ],
                         ],
                     ],
