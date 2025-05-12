@@ -52,7 +52,7 @@ class Services extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Nombre',
             'description' => 'Descripción',
-            'unit' => 'Unidad',
+            'unit' => 'Tipo',
             'price' => 'Precio',
             'quotation_type_id' => 'Tipo de Cotización',
             'quotationTypeName' => 'Tipo de Cotización',
