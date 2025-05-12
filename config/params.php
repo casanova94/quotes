@@ -5,5 +5,6 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'bsVersion' => '4.x',
-    'companyName' => 'POE A.C'
+    'companyName' => 'POE A.C',
+    'relativeSiteUrl' => '/quotes',
 ];

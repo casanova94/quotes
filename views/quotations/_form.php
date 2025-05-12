@@ -186,7 +186,7 @@ use yii\bootstrap4\Modal;
 </div>
 
 <?php
-
+$this->registerJsVar('relativeSiteUrl', Yii::$app->params['relativeSiteUrl']);
 $js = <<<JS
     // Función para calcular el subtotal
     function calculateSubtotal(row) {
@@ -212,7 +212,7 @@ $js = <<<JS
         var quotationTypeId = $('#quotations-quotation_type_id').val();
 
         if (quotationTypeId) {
-            $.get('/quotes/web/quotations/get-services', {quotation_type_id: quotationTypeId}, function(data) {
+            $.get(relativeSiteUrl + '/web/quotations/get-services', {quotation_type_id: quotationTypeId}, function(data) {
                 $('.service-select').each(function() {
                     var \$select = $(this);
                     var currentValue = \$select.val();
@@ -285,7 +285,7 @@ $js = <<<JS
 
         if (id) {
             if (confirm('¿Está seguro de eliminar este detalle?')) {
-                $.post('/quotes/web/quotation-details/delete?id=' + id, function(response) {
+                $.post(relativeSiteUrl + '/web/quotation-details/delete?id=' + id, function(response) {
                     if (response.success) {
                         \$row.remove(); // Elimina la fila del DOM
                         if ($('#details-table tbody').children().length === 0) {
@@ -348,7 +348,7 @@ $js = <<<JS
 
         if (serviceId) {
             // Realizar una solicitud AJAX para obtener el precio del servicio
-            $.get('/quotes/web/quotations/get-service-price', { service_id: serviceId }, function (data) {
+            $.get(relativeSiteUrl + '/web/quotations/get-service-price', { service_id: serviceId }, function (data) {
                 if (data.success) {
                     // Actualizar el campo "Precio Unitario" con el precio obtenido
                     \$row.find('.price-input').val(data.price);
@@ -373,7 +373,7 @@ $js = <<<JS
 
         if (serviceId) {
             // Realizar una solicitud AJAX para obtener la descripción del servicio
-            $.get('/quotes/web/quotations/get-service-description', { service_id: serviceId }, function (data) {
+            $.get(relativeSiteUrl + '/web/quotations/get-service-description', { service_id: serviceId }, function (data) {
                 if (data.success) {
                     // Actualizar el campo "Descripción" con la descripción obtenida
                     \$row.find('.description-input').val(data.description);
