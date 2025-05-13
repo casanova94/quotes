@@ -53,10 +53,10 @@ class SiteInspectionReports extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'quotation_id' => 'Quotation ID',
-            'technician_id' => 'Technician ID',
-            'inspection_date' => 'Inspection Date',
-            'device_condition_notes' => 'Device Condition Notes',
+            'quotation_id' => 'Cotización',
+            'technician_id' => 'Técnico',
+            'inspection_date' => 'Fecha de Inspección',
+            'device_condition_notes' => 'Notas de condición del equipo',
             'created_at' => 'Created At',
         ];
     }
@@ -89,6 +89,21 @@ class SiteInspectionReports extends \yii\db\ActiveRecord
     public function getTechnician()
     {
         return $this->hasOne(Technicians::class, ['id' => 'technician_id']);
+    }
+
+    public function getObservations()
+    {
+        return $this->hasMany(SiteInspectionObservations::class, ['inspection_report_id' => 'id']);
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        // Formatear la fecha al formato Y-m-d para el campo de tipo date
+        if ($this->inspection_date) {
+            $this->inspection_date = date('Y-m-d', strtotime($this->inspection_date));
+        }
     }
 
 }

@@ -7,6 +7,8 @@ use app\models\SiteInspectionReportsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\SiteInspectionObservations;
+use Yii;
 
 /**
  * SiteInspectionReportsController implements the CRUD actions for SiteInspectionReports model.
@@ -68,17 +70,23 @@ class SiteInspectionReportsController extends Controller
     public function actionCreate()
     {
         $model = new SiteInspectionReports();
+        $observations = [new SiteInspectionObservations()];
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $observations = SiteInspectionObservations::createMultiple(Yii::$app->request->post('SiteInspectionObservations'));
+
+            if ($model->save()) {
+                foreach ($observations as $observation) {
+                    $observation->inspection_report_id = $model->id;
+                    $observation->save();
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'observations' => $observations,
         ]);
     }
 
@@ -92,13 +100,51 @@ class SiteInspectionReportsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $existingObservations = $model->observations; // Obtener observaciones existentes
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            // Cargar las observaciones enviadas desde el formulario
+            $postedObservations = Yii::$app->request->post('SiteInspectionObservations', []);
+            $observations = [];
+
+            foreach ($postedObservations as $index => $postedObservation) {
+                if (!empty($postedObservation['id'])) {
+                    // Si la observación tiene un ID, es una observación existente
+                    $observation = SiteInspectionObservations::findOne($postedObservation['id']);
+                    if ($observation) {
+                        $observation->load(['SiteInspectionObservations' => $postedObservation]);
+                    }
+                } else {
+                    // Si no tiene ID, es una nueva observación
+                    $observation = new SiteInspectionObservations();
+                    $observation->load(['SiteInspectionObservations' => $postedObservation]);
+                }
+                $observations[] = $observation;
+            }
+
+            if ($model->save()) {
+                // Guardar las observaciones
+                foreach ($observations as $observation) {
+                    $observation->inspection_report_id = $model->id;
+                    $observation->save();
+                }
+
+                // Eliminar observaciones que no están en el formulario
+                $existingIds = array_column($existingObservations, 'id');
+                $postedIds = array_column($postedObservations, 'id');
+                $toDelete = array_diff($existingIds, $postedIds);
+
+                if (!empty($toDelete)) {
+                    SiteInspectionObservations::deleteAll(['id' => $toDelete]);
+                }
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'observations' => $existingObservations,
         ]);
     }
 

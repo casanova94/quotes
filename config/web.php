@@ -60,7 +60,8 @@ $config = [
     ],
         'formatter' => [
             'defaultTimeZone' => 'UTC', // Cambia a tu zona horaria si es necesario
-            'timeZone' => 'America/Mexico_City', // Ejemplo de zona horaria
+            // Ejemplo de zona horaria
+            'timeZone' => 'America/Merida',
         ],
     ],
     'params' => $params,

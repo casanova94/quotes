@@ -67,4 +67,15 @@ class SiteInspectionObservations extends \yii\db\ActiveRecord
         return $this->hasOne(SiteInspectionReports::class, ['id' => 'inspection_report_id']);
     }
 
+        public static function createMultiple($data)
+{
+    $models = [];
+    foreach ($data as $index => $item) {
+        $model = new self();
+        $model->load(['SiteInspectionObservations' => $item]);
+        $models[] = $model;
+    }
+    return $models;
+}
+
 }

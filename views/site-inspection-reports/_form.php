@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Merida'); // Establecer la zona horaria a Mérida, México
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -37,7 +38,9 @@ use app\models\Technicians;
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, 'inspection_date')->input('date') ?>
+                    <?= $form->field($model, 'inspection_date')->input('date', [
+                        'value' => $model->inspection_date ?:  date('Y-m-d'),
+                    ]) ?>
                 </div>
                 <div class="col-md-6">
                     <?= $form->field($model, 'device_condition_notes')->textarea(['rows' => 4]) ?>
@@ -70,6 +73,7 @@ use app\models\Technicians;
                             <?php foreach ($observations as $index => $observation): ?>
                                 <tr>
                                     <td>
+                                        <?= Html::hiddenInput("SiteInspectionObservations[$index][id]", $observation->id) ?>
                                         <?= Html::textInput("SiteInspectionObservations[$index][title]", $observation->title, ['class' => 'form-control']) ?>
                                     </td>
                                     <td>
