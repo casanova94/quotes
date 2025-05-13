@@ -66,6 +66,22 @@
                         ],
                     ],
                     [
+                        'label' => 'Reportes de Inspección',
+                        'icon' => 'clipboard',
+                        'items' => [
+                            [
+                                'label' => 'Crear Reporte',
+                                'icon' => 'plus',
+                                'url' => ['/site-inspection-reports/create'],
+                            ],
+                            [
+                                'label' => 'Ver Reportes',
+                                'icon' => 'eye',
+                                'url' => ['/site-inspection-reports/index'],
+                            ],
+                        ],
+                    ],
+                    [
                         'label' => 'Configuración',
                         'icon' => 'cog',
                         'items' => [
