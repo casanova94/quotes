@@ -39,6 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width: 100px;'], // Ancho del encabezado
             ],
             [
+                'attribute' => 'name',
+                'value' => 'name', 
+                'label' => 'Nombre',
+            ],
+            [
                 'attribute' => 'clientName',
                 'value' => 'client.name', 
                 'label' => 'Cliente',

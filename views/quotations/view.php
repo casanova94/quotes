@@ -42,6 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     [
+                        'attribute' => 'name',
+                        'label' => 'Nombre',
+                    ],
+                    [
                         'attribute' => 'client_id',
                         'format' => 'raw', // Permitir HTML en el valor
                         'value' => $model->client ? Html::a(

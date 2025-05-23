@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "quotations".
  *
  * @property int $id
+ * @property string|null $name
  * @property int $client_id
  * @property int $quotation_type_id
  * @property int|null $technician_id
@@ -46,7 +47,7 @@ class Quotations extends \yii\db\ActiveRecord
             [['client_id', 'quotation_type_id', 'status_id'], 'required'],
             [['client_id', 'quotation_type_id', 'technician_id', 'status_id'], 'integer'],
             [['total_amount'], 'number'],
-            [['custom_footer'], 'string'],
+            [['custom_footer', 'name'], 'string'],
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clients::class, 'targetAttribute' => ['client_id' => 'id']],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
@@ -62,6 +63,7 @@ class Quotations extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'name' => 'Nombre de la Cotización',
             'client_id' => 'Cliente',
             'quotation_type_id' => 'Tipo de Cotización',
             'technician_id' => 'Técnico',

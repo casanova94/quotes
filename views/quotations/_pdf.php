@@ -1,7 +1,7 @@
 <?php
 /** @var app\models\Quotations $quotation */
 /** @var app\models\QuotationTemplates $template */
-
+use yii\helpers\Html;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -67,6 +67,9 @@
 
 <div style="margin-top: 20px;margin-bottom: 20px;">
       <div style="width: 50%; float: left;text-align: left;">
+       <?php if ($quotation->name): ?>
+            <h4 style="margin-top: 0;padding-top: 0;"><?= Html::encode($quotation->name) ?></h4>
+       <?php endif; ?>
        Estimado(a) <?= $quotation->client->name ?>,
     </div>
     <div style="width: 50%; float: right; text-align: right;">

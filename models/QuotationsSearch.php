@@ -25,7 +25,7 @@ class QuotationsSearch extends Quotations
             [['id', 'client_id', 'quotation_type_id', 'technician_id', 'status_id'], 'integer'],
             [['total_amount'], 'number'],
             [['custom_footer', 'created_at', 'updated_at'], 'safe'],
-            [['clientName', 'quotationTypeName', 'technicianName', 'statusName'], 'safe'],
+            [['clientName', 'quotationTypeName', 'technicianName', 'statusName', 'name'], 'safe'],
         ];
     }
 
@@ -48,6 +48,7 @@ class QuotationsSearch extends Quotations
             'quotationTypeName' => 'Tipo de Cotización',
             'technicianName' => 'Técnico',
             'statusName' => 'Estado',
+            'name' => 'Nombre',
         ];
     }
 
@@ -94,6 +95,7 @@ class QuotationsSearch extends Quotations
                         'asc' => ['quotation_statuses.name' => SORT_ASC],
                         'desc' => ['quotation_statuses.name' => SORT_DESC],
                     ],
+                    'name',
                     'total_amount',
                     'created_at',
                     'updated_at',
@@ -116,7 +118,7 @@ class QuotationsSearch extends Quotations
             'quotations.status_id' => $this->status_id,
             'quotations.total_amount' => $this->total_amount,
             //'quotations.created_at' => $this->created_at,
-            'quotations.updated_at' => $this->updated_at,
+            'quotations.updated_at' => $this->updated_at
         ]);
 
         $query->andFilterWhere(['like', 'quotations.custom_footer', $this->custom_footer])
@@ -124,7 +126,8 @@ class QuotationsSearch extends Quotations
             ->andFilterWhere(['like', 'quotation_types.name', $this->quotationTypeName])
             ->andFilterWhere(['like', 'technicians.name', $this->technicianName])
             ->andFilterWhere(['like', 'quotation_statuses.name', $this->statusName])
-            ->andFilterWhere(['like', 'quotations.id', $this->id]);
+            ->andFilterWhere(['like', 'quotations.id', $this->id])
+            ->andFilterWhere(['like', 'quotations.name', $this->name]);
 
         
         if (!empty($this->created_at)) {

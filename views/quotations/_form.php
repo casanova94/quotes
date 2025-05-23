@@ -30,6 +30,11 @@ use yii\bootstrap4\Modal;
 
         <div class="card-body">
              <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+             <div class="row">
         <div class="col-md-4">
            <div class="form-group field-quotation-client_id">
     <?= $form->field($model, 'client_id')->dropDownList(
