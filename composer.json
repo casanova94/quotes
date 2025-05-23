@@ -25,7 +25,9 @@
         "mpdf/mpdf": "^8.2",
         "kartik-v/yii2-editors": "dev-master",
         "hail812/yii2-adminlte3": "~1.1",
-        "2amigos/yii2-ckeditor-widget": "^2.1"
+        "2amigos/yii2-ckeditor-widget": "^2.1",
+        "kartik-v/yii2-widget-select2": "@dev",
+        "kartik-v/yii2-widget-datetimepicker": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

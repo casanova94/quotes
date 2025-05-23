@@ -20,66 +20,27 @@
                     [
                         'label' => 'Cotizaciones',
                         'icon' => 'file',
-                        'items' => [
-                            [
-                                'label' => 'Crear Cotización',
-                                'icon' => 'plus',
-                                'url' => ['/quotations/create'],
-                            ],
-                            [
-                                'label' => 'Ver Cotizaciones',
-                                'icon' => 'eye',
-                                'url' => ['/quotations/index'],
-                            ],
-                        ]
+                        'url' => ['/quotations/index'],
                     ],
                     [
+                        'label' => 'Órdenes de Servicio',
+                        'icon' => 'clipboard',
+                        'url' => ['/service-orders/index']
+                    ],
+                   [
                         'label' => 'Clientes',
                         'icon' => 'user',
-                        'items' => [
-                            [
-                                'label' => 'Crear Cliente',
-                                'icon' => 'plus',
-                                'url' => ['/clients/create'],
-                            ],
-                            [
-                                'label' => 'Ver Clientes',
-                                'icon' => 'eye',
-                                'url' => ['/clients/index'],
-                            ],
-                        ],
-                    ],
+                        'url' => ['/clients/index']
+                   ],
                     [
                         'label' => 'Técnicos',
                         'icon' => 'user-cog',
-                        'items' => [
-                            [
-                                'label' => 'Crear Técnico',
-                                'icon' => 'plus',
-                                'url' => ['/technicians/create'],
-                            ],
-                            [
-                                'label' => 'Ver Técnicos',
-                                'icon' => 'eye',
-                                'url' => ['/technicians/index'],
-                            ],
-                        ],
+                        'url' => ['/technicians/index'],
                     ],
                     [
                         'label' => 'Reportes de Inspección',
                         'icon' => 'clipboard',
-                        'items' => [
-                            [
-                                'label' => 'Crear Reporte',
-                                'icon' => 'plus',
-                                'url' => ['/site-inspection-reports/create'],
-                            ],
-                            [
-                                'label' => 'Ver Reportes',
-                                'icon' => 'eye',
-                                'url' => ['/site-inspection-reports/index'],
-                            ],
-                        ],
+                        'url' => ['/site-inspection-reports/index']
                     ],
                     [
                         'label' => 'Configuración',
