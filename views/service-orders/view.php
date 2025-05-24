@@ -44,14 +44,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'label' => 'Cotización'
                     ],
-                    [
-                        'attribute' => 'technician_id',
-                        'value' => 'technician.name',
-                        'label' => 'Técnico'
-                    ],
+                    'technician.name',
                     'status',
                     'creation_date:date',
                     'scheduledDateTime:datetime',
+                ],
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h3 class="card-title">Información del Cliente</h3>
+        </div>
+        <div class="card-body">
+            <?= DetailView::widget([
+                'model' => $model->quotation->client,
+                'attributes' => [
+                    'name',
+                    'phone',
+                    'address',
+                    'email',
                 ],
             ]) ?>
         </div>

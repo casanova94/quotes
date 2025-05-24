@@ -26,7 +26,10 @@ use app\models\Technicians;
                 <div class="col-md-6">
                     <?= $form->field($model, 'service_order_id')->widget(Select2::class, [
                         'data' => \yii\helpers\ArrayHelper::map(ServiceOrder::find()->all(), 'id', 'id'),
-                        'options' => ['placeholder' => 'Seleccione una orden de servicio...'],
+                        'options' => [
+                            'placeholder' => 'Seleccione una orden de servicio...',
+                            'value' => Yii::$app->request->get('service_order_id'),
+                        ],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
@@ -34,10 +37,13 @@ use app\models\Technicians;
                 </div>
                 <div class="col-md-6">
                     <?= $form->field($model, 'technician_id')->widget(Select2::class, [
-                        'data' => \yii\helpers\ArrayHelper::map(Technicians::find()->all(), 'id', 'name'),
-                        'options' => ['placeholder' => 'Seleccione un técnico...'],
+                        'data' => \yii\helpers\ArrayHelper::map($technicians, 'id', 'name'),
+                        'options' => [
+                            'placeholder' => 'Seleccione un técnico...',
+                            'value' => Yii::$app->user->identity->isTechnician() ? Yii::$app->user->identity->technician->id : null,
+                        ],
                         'pluginOptions' => [
-                            'allowClear' => true
+                            'allowClear' => !Yii::$app->user->identity->isTechnician()
                         ],
                     ]) ?>
                 </div>

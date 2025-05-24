@@ -60,9 +60,10 @@ $serviceOrders = ServiceOrder::find()
                                             </td>
                                             <td><?= $order->quotation->client->name ?></td>
                                             <td>
-                                                <span class="badge badge-<?= $order->status == 'Pendiente' ? 'warning' : 
-                                                    ($order->status == 'En Proceso' ? 'info' : 
-                                                    ($order->status == 'Completada' ? 'success' : 'secondary')) ?>">
+                                                <span class="badge badge-<?= $order->status == ServiceOrder::STATUS_PENDING ? 'warning' : 
+                                                    ($order->status == ServiceOrder::STATUS_IN_PROGRESS ? 'info' : 
+                                                    ($order->status == ServiceOrder::STATUS_COMPLETED ? 'success' : 
+                                                    ($order->status == ServiceOrder::STATUS_CANCELLED ? 'danger' : 'secondary'))) ?>">
                                                     <?= $order->status ?>
                                                 </span>
                                             </td>
@@ -101,17 +102,21 @@ $serviceOrders = ServiceOrder::find()
                     $pendingCount = 0;
                     $inProgressCount = 0;
                     $completedCount = 0;
+                    $cancelledCount = 0;
                     
                     foreach ($serviceOrders as $order) {
                         switch ($order->status) {
-                            case 'Pendiente':
+                            case ServiceOrder::STATUS_PENDING:
                                 $pendingCount++;
                                 break;
-                            case 'En Proceso':
+                            case ServiceOrder::STATUS_IN_PROGRESS:
                                 $inProgressCount++;
                                 break;
-                            case 'Completada':
+                            case ServiceOrder::STATUS_COMPLETED:
                                 $completedCount++;
+                                break;
+                            case ServiceOrder::STATUS_CANCELLED:
+                                $cancelledCount++;
                                 break;
                         }
                     }
@@ -164,7 +169,7 @@ $serviceOrders = ServiceOrder::find()
                 <div class="card-body">
                     <?php
                     $upcomingOrders = array_filter($serviceOrders, function($order) {
-                        return $order->status != 'Completada' && 
+                        return $order->status != ServiceOrder::STATUS_COMPLETED && 
                                strtotime($order->scheduledDateTime) >= strtotime('today');
                     });
                     
@@ -186,7 +191,9 @@ $serviceOrders = ServiceOrder::find()
                                             <td><?= Yii::$app->formatter->asDatetime($order->scheduledDateTime) ?></td>
                                             <td><?= $order->quotation->client->name ?></td>
                                             <td>
-                                                <span class="badge badge-<?= $order->status == 'Pendiente' ? 'warning' : 'info' ?>">
+                                                <span class="badge badge-<?= $order->status == ServiceOrder::STATUS_PENDING ? 'warning' : 
+                                                    ($order->status == ServiceOrder::STATUS_IN_PROGRESS ? 'info' : 
+                                                    ($order->status == ServiceOrder::STATUS_CANCELLED ? 'danger' : 'secondary')) ?>">
                                                     <?= $order->status ?>
                                                 </span>
                                             </td>

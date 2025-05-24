@@ -10,4 +10,9 @@ class UserHelper
     {
         return Yii::$app->user->can('admin');
     }
+
+    public static function isTechnician()
+    {
+        return Yii::$app->user->can('technician');
+    }
 } 

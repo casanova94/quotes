@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\ServiceOrder;
+use app\components\helpers\UserHelper;
 
 $this->title = 'Panel de control';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
@@ -30,9 +31,10 @@ $quotationsToday = Quotations::find()
     ->count();
 
 // Obtener órdenes de servicio por estado
-$pendingOrders = ServiceOrder::find()->where(['status' => 'Pendiente'])->count();
-$inProgressOrders = ServiceOrder::find()->where(['status' => 'En Proceso'])->count();
-$completedOrders = ServiceOrder::find()->where(['status' => 'Completada'])->count();
+$pendingOrders = ServiceOrder::find()->where(['status' => ServiceOrder::STATUS_PENDING])->count();
+$inProgressOrders = ServiceOrder::find()->where(['status' => ServiceOrder::STATUS_IN_PROGRESS])->count();
+$completedOrders = ServiceOrder::find()->where(['status' => ServiceOrder::STATUS_COMPLETED])->count();
+$cancelledOrders = ServiceOrder::find()->where(['status' => ServiceOrder::STATUS_CANCELLED])->count();
 
 // Obtener órdenes de servicio recientes
 $recentOrders = ServiceOrder::find()
@@ -206,6 +208,9 @@ $recentOrders = ServiceOrder::find()
                                         <th>Cliente</th>
                                         <th>Estado</th>
                                         <th>Fecha Programada</th>
+                                        <?php if (!UserHelper::isTechnician()): ?>
+                                            <th>Cotización</th>
+                                        <?php endif; ?>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -215,13 +220,23 @@ $recentOrders = ServiceOrder::find()
                                             <td><?= str_pad($order->id, 6, '0', STR_PAD_LEFT) ?></td>
                                             <td><?= $order->quotation->client->name ?></td>
                                             <td>
-                                                <span class="badge badge-<?= $order->status == 'Pendiente' ? 'warning' : 
-                                                    ($order->status == 'En Proceso' ? 'info' : 
-                                                    ($order->status == 'Completada' ? 'success' : 'secondary')) ?>">
+                                                <span class="badge badge-<?= $order->status == ServiceOrder::STATUS_PENDING ? 'warning' : 
+                                                    ($order->status == ServiceOrder::STATUS_IN_PROGRESS ? 'info' : 
+                                                    ($order->status == ServiceOrder::STATUS_COMPLETED ? 'success' : 
+                                                    ($order->status == ServiceOrder::STATUS_CANCELLED ? 'danger' : 'secondary'))) ?>">
                                                     <?= $order->status ?>
                                                 </span>
                                             </td>
                                             <td><?= Yii::$app->formatter->asDatetime($order->scheduledDateTime) ?></td>
+                                            <?php if (!UserHelper::isTechnician()): ?>
+                                                <td>
+                                                    <?= Html::a(
+                                                        str_pad($order->quotation->id, 6, '0', STR_PAD_LEFT),
+                                                        ['/quotations/view', 'id' => $order->quotation->id],
+                                                        ['title' => 'Ver cotización']
+                                                    ) ?>
+                                                </td>
+                                            <?php endif; ?>
                                             <td>
                                                 <?= Html::a(
                                                     '<i class="fas fa-eye"></i>',

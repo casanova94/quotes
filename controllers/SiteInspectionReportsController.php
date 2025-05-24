@@ -87,6 +87,17 @@ class SiteInspectionReportsController extends Controller
         $model = new SiteInspectionReports();
         $observations = [new SiteInspectionObservations()];
 
+        // Si se proporciona un service_order_id, establecerlo en el modelo
+        if ($service_order_id = Yii::$app->request->get('service_order_id')) {
+            $model->service_order_id = $service_order_id;
+        }
+
+        // Filtrar técnicos si el usuario es técnico
+        $technicianQuery = \app\models\Technicians::find();
+        if (Yii::$app->user->identity->isTechnician()) {
+            $technicianQuery->where(['id' => Yii::$app->user->identity->technician->id]);
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             $observations = SiteInspectionObservations::createMultiple(Yii::$app->request->post('SiteInspectionObservations'));
 
@@ -102,6 +113,7 @@ class SiteInspectionReportsController extends Controller
         return $this->render('create', [
             'model' => $model,
             'observations' => $observations,
+            'technicians' => $technicianQuery->all(),
         ]);
     }
 
@@ -116,6 +128,12 @@ class SiteInspectionReportsController extends Controller
     {
         $model = $this->findModel($id);
         $existingObservations = $model->observations; // Obtener observaciones existentes
+
+        // Filtrar técnicos si el usuario es técnico
+        $technicianQuery = \app\models\Technicians::find();
+        if (Yii::$app->user->identity->isTechnician()) {
+            $technicianQuery->where(['id' => Yii::$app->user->identity->technician->id]);
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             // Cargar las observaciones enviadas desde el formulario
@@ -160,6 +178,7 @@ class SiteInspectionReportsController extends Controller
         return $this->render('update', [
             'model' => $model,
             'observations' => $existingObservations,
+            'technicians' => $technicianQuery->all(),
         ]);
     }
 
