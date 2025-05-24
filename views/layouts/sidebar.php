@@ -55,11 +55,7 @@
                                 'icon' => 'file-alt',
                                 'url' => ['/quotation-types/index'],
                             ],
-                            [
-                                'label' => 'Estados de Cotización',
-                                'icon' => 'check-circle',
-                                'url' => ['/quotation-statuses/index'],
-                            ],
+
                             [
                                 'label' => 'Plantillas de Cotización',
                                 'icon' => 'file-code',

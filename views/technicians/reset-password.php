@@ -13,8 +13,6 @@ $this->params['breadcrumbs'][] = 'Resetear Contraseña';
 ?>
 <div class="technicians-reset-password">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <div class="card">
         <div class="card-body">
             <?php $form = ActiveForm::begin(); ?>

@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'technician.name',
                     'status',
+                    'notes',
                     'creation_date:date',
                     'scheduledDateTime:datetime',
                 ],
