@@ -298,15 +298,30 @@ class QuotationsController extends Controller
         // Configurar MPDF
         $mpdf = new Mpdf();
 
-        // Configurar el pie de página con los términos y condiciones
+        // Configurar el pie de página con los términos y condiciones y número de página
         $mpdf->SetHTMLFooter('
             <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
                 ' . nl2br($template->terms_and_conditions) . '
+                <div style="text-align: center; margin-top: 5px;">
+                    {PAGENO}/{nbpg}
+                </div>
             </div>
         ');
 
         // Escribir el contenido HTML en el PDF
         $mpdf->WriteHTML($html);
+
+        // Obtener el número total de páginas
+        $totalPages = $mpdf->page;
+
+        // Si solo hay una página, eliminar el número de página
+        if ($totalPages <= 1) {
+            $mpdf->SetHTMLFooter('
+                <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                    ' . nl2br($template->terms_and_conditions) . '
+                </div>
+            ');
+        }
 
         // Generar el archivo PDF
         $fileName = 'Cotizacion_' . $quotation->id . '.pdf';

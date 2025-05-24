@@ -38,15 +38,20 @@ use yii\helpers\Html;
             text-align: left;
         }
 
-        .footer {
-            position: fixed;
-            bottom: 50;
-            left: 0;
-            right: 0;
+        .custom-footer {
+            margin-top: 30px;
+            margin-bottom: 30px;
             padding: 10px;
-            background-color:
-                <?= $template->background_color ?: '#ffffff' ?>
-            ;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .page-break {
+            page-break-after: always;
         }
 
     </style>
@@ -114,16 +119,15 @@ use yii\helpers\Html;
         </tbody>
     </table>
 
+    <div style="clear: both;"></div>
 
-            <?php if ($quotation->custom_footer): ?>
-            <div class="custom-footer">
-                <?= $quotation->custom_footer ?>
-            </div>
-        <?php endif; ?>
+    <?php if ($quotation->custom_footer): ?>
+        <div class="custom-footer">
+            <?= $quotation->custom_footer ?>
+        </div>
+    <?php endif; ?>
 
     <div class="footer">
-
-        <!-- Renderizar el HTML del footer_text -->
         <div class="footer-text">
             <?= $template->footer_text ?: 'Gracias por su preferencia.' ?>
         </div>
