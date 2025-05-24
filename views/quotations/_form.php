@@ -198,7 +198,8 @@ $js = <<<JS
     function calculateTotal() {
         var total = 0;
         $('#details-table tbody tr').each(function () {
-            var subtotal = parseFloat($(this).find('.subtotal').text()) || 0;
+            var subtotalText = $(this).find('.subtotal').text().trim();
+            var subtotal = parseFloat(subtotalText.replace(/[^0-9.-]+/g, '')) || 0;
             total += subtotal;
         });
         $('#quotations-total_amount').val(total.toFixed(2)); // Actualizar el campo de monto total
