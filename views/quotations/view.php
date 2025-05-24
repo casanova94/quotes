@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="quotations-view">
 
     <p> 
-        <?= Html::a('Generar PDF', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-secondary', 'target' => '_blank']) ?>
+        <?= Html::a('Generar cotización', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-secondary', 'target' => '_blank']) ?>
         <?= Html::a('Crear Orden de Servicio', ['service-orders/create', 'quotation_id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [

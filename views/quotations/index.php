@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                      'custom' => function ($url, $model, $key) {
                          return Html::a('<i class="fas fa-file-pdf"></i>', ['quotations/generate-pdf', 'id' => $model->id], [
-                             'title' => 'Generar PDF',
+                             'title' => 'Generar cotización',
                              'data-pjax' => '0',
                              'class' => 'btn btn-xs btn-danger mt-3 mt-md-0',
                          ]);
