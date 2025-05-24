@@ -29,8 +29,13 @@ $this->params['breadcrumbs'][] = 'Reportes de Inspección';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'quotation_id',
+           // 'id',
+           [
+            'attribute' => 'service_order_id',
+            'value' => function($model) {
+                return $model->serviceOrder ? $model->serviceOrder->id : '';
+            }
+           ],
             'technician_id',
             'inspection_date',
             'device_condition_notes:ntext',

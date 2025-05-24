@@ -17,7 +17,7 @@ class SiteInspectionReportsSearch extends SiteInspectionReports
     public function rules()
     {
         return [
-            [['id', 'quotation_id', 'technician_id'], 'integer'],
+            [['id', 'service_order_id', 'technician_id'], 'integer'],
             [['inspection_date', 'device_condition_notes', 'created_at'], 'safe'],
         ];
     }
@@ -60,7 +60,7 @@ class SiteInspectionReportsSearch extends SiteInspectionReports
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'quotation_id' => $this->quotation_id,
+            'service_order_id' => $this->service_order_id,
             'technician_id' => $this->technician_id,
             'inspection_date' => $this->inspection_date,
             'created_at' => $this->created_at,

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var app\models\SiteInspectionReports $model */
 
-$this->title = $model->id;
+$this->title = '#'.str_pad($model->id, 6, '0', STR_PAD_LEFT).' - '.$model->serviceOrder->quotation->name;
 $this->params['breadcrumbs'][] = ['label' => 'Reportes de Inspección', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => '¿Está seguro de que desea eliminar este elemento?',
+                'confirm' => '¿Está seguro que desea eliminar este reporte?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -28,9 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'quotation_id',
-            'technician_id',
+            //'id',
+            [
+                'attribute' => 'service_order_id',
+                'format' => 'html',
+                'value' => function($model) {
+                    return $model->serviceOrder ? Html::a('#'.str_pad($model->serviceOrder->id, 6, '0', STR_PAD_LEFT).' - '.$model->serviceOrder->quotation->name, ['service-orders/view', 'id' => $model->serviceOrder->id]            ) : '';
+                }
+            ],
+            'technician.name',
             'inspection_date',
             'device_condition_notes:ntext',
             'created_at',

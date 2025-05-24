@@ -3,8 +3,8 @@ date_default_timezone_set('America/Merida'); // Establecer la zona horaria a Mé
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use app\models\Quotations;
+use kartik\select2\Select2;
+use app\models\ServiceOrder;
 use app\models\Technicians;
 
 /** @var yii\web\View $this */
@@ -17,29 +17,35 @@ use app\models\Technicians;
 
     <?php $form = ActiveForm::begin(['id' => 'site-inspection-report-form']); ?>
 
-    <div class="card mt-3">
+    <div class="card">
         <div class="card-header">
             <h3 class="card-title">Datos Generales</h3>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, 'quotation_id')->dropDownList(
-                        ArrayHelper::map(Quotations::find()->all(), 'id', 'id'),
-                        ['prompt' => 'Seleccione una cotización']
-                    ) ?>
+                    <?= $form->field($model, 'service_order_id')->widget(Select2::class, [
+                        'data' => \yii\helpers\ArrayHelper::map(ServiceOrder::find()->all(), 'id', 'id'),
+                        'options' => ['placeholder' => 'Seleccione una orden de servicio...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]) ?>
                 </div>
                 <div class="col-md-6">
-                    <?= $form->field($model, 'technician_id')->dropDownList(
-                        ArrayHelper::map(Technicians::find()->all(), 'id', 'name'),
-                        ['prompt' => 'Seleccione un técnico']
-                    ) ?>
+                    <?= $form->field($model, 'technician_id')->widget(Select2::class, [
+                        'data' => \yii\helpers\ArrayHelper::map(Technicians::find()->all(), 'id', 'name'),
+                        'options' => ['placeholder' => 'Seleccione un técnico...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]) ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <?= $form->field($model, 'inspection_date')->input('date', [
-                        'value' => $model->inspection_date ?:  date('Y-m-d'),
+                        'value' => $model->inspection_date ?: date('Y-m-d'),
                     ]) ?>
                 </div>
                 <div class="col-md-6">

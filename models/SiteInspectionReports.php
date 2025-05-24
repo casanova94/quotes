@@ -8,13 +8,13 @@ use Yii;
  * This is the model class for table "site_inspection_reports".
  *
  * @property int $id
- * @property int $quotation_id
+ * @property int $service_order_id
  * @property int|null $technician_id
  * @property string|null $inspection_date
  * @property string|null $device_condition_notes
  * @property string|null $created_at
  *
- * @property Quotations $quotation
+ * @property ServiceOrder $serviceOrder
  * @property SiteInspectionObservations[] $siteInspectionObservations
  * @property Technicians $technician
  */
@@ -37,11 +37,11 @@ class SiteInspectionReports extends \yii\db\ActiveRecord
     {
         return [
             [['technician_id', 'device_condition_notes'], 'default', 'value' => null],
-            [['quotation_id'], 'required'],
-            [['quotation_id', 'technician_id'], 'integer'],
+            [['service_order_id'], 'required'],
+            [['service_order_id', 'technician_id'], 'integer'],
             [['inspection_date', 'created_at'], 'safe'],
             [['device_condition_notes'], 'string'],
-            [['quotation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quotations::class, 'targetAttribute' => ['quotation_id' => 'id']],
+            [['service_order_id'], 'exist', 'skipOnError' => true, 'targetClass' => ServiceOrder::class, 'targetAttribute' => ['service_order_id' => 'id']],
             [['technician_id'], 'exist', 'skipOnError' => true, 'targetClass' => Technicians::class, 'targetAttribute' => ['technician_id' => 'id']],
         ];
     }
@@ -53,7 +53,7 @@ class SiteInspectionReports extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'quotation_id' => 'Cotización',
+            'service_order_id' => 'Orden de Servicio',
             'technician_id' => 'Técnico',
             'inspection_date' => 'Fecha de Inspección',
             'device_condition_notes' => 'Notas de condición del equipo',
@@ -62,13 +62,13 @@ class SiteInspectionReports extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Quotation]].
+     * Gets query for [[ServiceOrder]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getQuotation()
+    public function getServiceOrder()
     {
-        return $this->hasOne(Quotations::class, ['id' => 'quotation_id']);
+        return $this->hasOne(ServiceOrder::class, ['id' => 'service_order_id']);
     }
 
     /**
