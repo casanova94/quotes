@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-inspection-reports-index">
 
-    <p>
+    <p class="text-right">
         <?= Html::a('Crear Reporte de Inspección', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

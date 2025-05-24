@@ -21,21 +21,24 @@
                         'label' => 'Cotizaciones',
                         'icon' => 'file',
                         'url' => ['/quotations/index'],
+                        'visible' => !Yii::$app->user->identity->isTechnician(),
                     ],
                     [
                         'label' => 'Órdenes de Servicio',
                         'icon' => 'clipboard',
                         'url' => ['/service-orders/index']
                     ],
-                   [
+                    [
                         'label' => 'Clientes',
                         'icon' => 'user',
-                        'url' => ['/clients/index']
-                   ],
+                        'url' => ['/clients/index'],
+                        'visible' => !Yii::$app->user->identity->isTechnician(),
+                    ],
                     [
                         'label' => 'Técnicos',
                         'icon' => 'user-cog',
                         'url' => ['/technicians/index'],
+                        'visible' => !Yii::$app->user->identity->isTechnician(),
                     ],
                     [
                         'label' => 'Reportes de Inspección',
@@ -45,6 +48,7 @@
                     [
                         'label' => 'Configuración',
                         'icon' => 'cog',
+                        'visible' => !Yii::$app->user->identity->isTechnician(),
                         'items' => [
                             [
                                 'label' => 'Tipos de Cotización',
