@@ -66,14 +66,13 @@ use app\models\Technicians;
                         <tr>
                             <th>Título</th>
                             <th>Descripción</th>
-                            <th>Foto</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($observations)): ?>
                             <tr class="empty-observation-row">
-                                <td colspan="4" class="text-center">No hay observaciones agregadas</td>
+                                <td colspan="3" class="text-center">No hay observaciones agregadas</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($observations as $index => $observation): ?>
@@ -84,9 +83,6 @@ use app\models\Technicians;
                                     </td>
                                     <td>
                                         <?= Html::textarea("SiteInspectionObservations[$index][description]", $observation->description, ['class' => 'form-control', 'rows' => 2]) ?>
-                                    </td>
-                                    <td>
-                                        <?= Html::fileInput("SiteInspectionObservations[$index][photo_url]", null, ['class' => 'form-control']) ?>
                                     </td>
                                     <td>
                                         <?= Html::button('<i class="fas fa-trash"></i>', ['class' => 'btn btn-danger btn-sm delete-row']) ?>
@@ -124,9 +120,6 @@ $js = <<<JS
                     <textarea name="SiteInspectionObservations[\${index}][description]" class="form-control" rows="2"></textarea>
                 </td>
                 <td>
-                    <input type="file" name="SiteInspectionObservations[\${index}][photo_url]" class="form-control">
-                </td>
-                <td>
                     <button type="button" class="btn btn-danger btn-sm delete-row">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -142,7 +135,7 @@ $js = <<<JS
         if ($('#observations-table tbody tr').length === 0) {
             $('#observations-table tbody').html(`
                 <tr class="empty-observation-row">
-                    <td colspan="4" class="text-center">No hay observaciones agregadas</td>
+                    <td colspan="3" class="text-center">No hay observaciones agregadas</td>
                 </tr>
             `);
         }

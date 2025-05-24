@@ -56,13 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'title',
                 'description:ntext',
-                [
-                    'attribute' => 'photo_url',
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        return $model->photo_url ? Html::a('Ver Foto', $model->photo_url, ['target' => '_blank']) : 'Sin Foto';
-                    },
-                ],
+               
             ],
         ]); ?>
     </div>
