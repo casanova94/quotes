@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p> 
         <?= Html::a('Generar PDF', ['generate-pdf', 'id' => $model->id], ['class' => 'btn btn-secondary', 'target' => '_blank']) ?>
+        <?= Html::a('Crear Orden de Servicio', ['service-orders/create', 'quotation_id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -106,6 +107,55 @@ $this->params['breadcrumbs'][] = $this->title;
                             $model->getQuotationDetails()->sum('subtotal')
                         ), // Calcular el total de la columna "subtotal"
                     ]
+                ],
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h3 class="card-title">Órdenes de Servicio Asociadas</h3>
+        </div>
+        <div class="card-body">
+            <?= GridView::widget([
+                'dataProvider' => new \yii\data\ActiveDataProvider([
+                    'query' => $model->getServiceOrders(),
+                ]),
+                'columns' => [
+                    [
+                        'attribute' => 'id',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            return Html::a('#' . str_pad($model->id, 6, '0', STR_PAD_LEFT), 
+                                ['service-orders/view', 'id' => $model->id],
+                                ['class' => 'btn btn-link px-0 mx-0']
+                            );
+                        },
+                        'label' => 'Folio',
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'value' => 'status',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            $statusColors = [
+                                'Pendiente' => 'warning',
+                                'En proceso' => 'info',
+                                'Finalizado' => 'success',
+                                'Cancelado' => 'danger'
+                            ];
+                            $color = $statusColors[$model->status] ?? 'secondary';
+                            return "<span class='badge badge-{$color}'>{$model->status}</span>";
+                        },
+                    ],
+                    [
+                        'attribute' => 'technician_id',
+                        'value' => function ($model) {
+                            return $model->technician ? $model->technician->name : 'No asignado';
+                        },
+                        'label' => 'Técnico',
+                    ],
+                    'scheduledDateTime',
                 ],
             ]) ?>
         </div>

@@ -80,8 +80,14 @@ $this->params['breadcrumbs'][] = $this->title;
                       [
                         'headerOptions' => ['style' => 'width: 130px;'], // Ancho del encabezado,
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{custom} {view} {update} {delete} ', // puedes agregar o quitar botones
+                    'template' => '{create-order} {custom} {view} {update} {delete} ', // puedes agregar o quitar botones
                     'buttons' => [
+                        'create-order' => function ($url, $model, $key) {
+                            return Html::a('<i class="fas fa-clipboard-list"></i>', ['service-orders/create', 'quotation_id' => $model->id], [
+                                'title' => 'Crear Orden de Servicio',
+                                'class' => 'btn btn-xs btn-info mt-3 mt-md-0',
+                            ]);
+                        },
                         'view' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-eye"></i>', $url, [
                                         'title' => 'Ver',

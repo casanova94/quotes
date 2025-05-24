@@ -128,4 +128,14 @@ class Quotations extends \yii\db\ActiveRecord
         return $this->hasOne(QuotationStatuses::class, ['id' => 'status_id']);
     }
 
+    /**
+     * Gets query for [[ServiceOrders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServiceOrders()
+    {
+        return $this->hasMany(ServiceOrder::class, ['quotation_id' => 'id']);
+    }
+
 }

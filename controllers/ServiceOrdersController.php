@@ -75,6 +75,11 @@ class ServiceOrdersController extends Controller
     public function actionCreate()
     {
         $model = new ServiceOrder();
+        
+        // Si se proporciona un quotation_id, establecerlo en el modelo
+        if ($quotation_id = Yii::$app->request->get('quotation_id')) {
+            $model->quotation_id = $quotation_id;
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
