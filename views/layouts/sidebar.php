@@ -62,6 +62,11 @@
                                 'url' => ['/quotation-templates/index'],
                             ],
                             [
+                                'label' => 'Plantillas de Notas de Venta',
+                                'icon' => 'file-invoice',
+                                'url' => ['/sales-note-templates/index'],
+                            ],
+                            [
                                 'label' => 'Servicios',
                                 'icon' => 'cogs',
                                 'url' => ['/services/index'],
