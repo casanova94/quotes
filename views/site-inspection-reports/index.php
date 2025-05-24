@@ -11,13 +11,12 @@ use yii\widgets\Pjax;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Reportes de Inspección';
-$this->params['breadcrumbs'][] = 'Reportes de Inspección';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-inspection-reports-index">
 
-
     <p>
-        <?= Html::a('Crear Reporte', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Reporte de Inspección', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,22 +29,23 @@ $this->params['breadcrumbs'][] = 'Reportes de Inspección';
             ['class' => 'yii\grid\SerialColumn'],
 
            // 'id',
-           [
-            'attribute' => 'service_order_id',
-            'value' => function($model) {
-                return $model->serviceOrder ? $model->serviceOrder->id : '';
-            }
-           ],
-            'technician_id',
+            [
+                'attribute' => 'service_order_number',
+                'label' => 'Orden de Servicio',
+                'value' => function($model) {
+                    return $model->serviceOrder ? str_pad($model->serviceOrder->id, 6, '0', STR_PAD_LEFT)    : '';
+                }
+            ],
+            [
+                'attribute' => 'technician_name',
+                'value' => 'technician.name',
+                'label' => 'Técnico',
+            ],
             'inspection_date',
             'device_condition_notes:ntext',
-            //'created_at',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, SiteInspectionReports $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+            'created_at',
+
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
