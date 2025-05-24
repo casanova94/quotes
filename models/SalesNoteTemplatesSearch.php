@@ -18,7 +18,7 @@ class SalesNoteTemplatesSearch extends SalesNoteTemplates
     {
         return [
             [['id', 'quotation_type_id'], 'integer'],
-            [['logo', 'header_text', 'company_text', 'bottom_text', 'terms_and_conditions', 'created_at', 'updated_at'], 'safe'],
+            [['logo', 'header_text', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -66,10 +66,7 @@ class SalesNoteTemplatesSearch extends SalesNoteTemplates
         ]);
 
         $query->andFilterWhere(['like', 'logo', $this->logo])
-            ->andFilterWhere(['like', 'header_text', $this->header_text])
-            ->andFilterWhere(['like', 'company_text', $this->company_text])
-            ->andFilterWhere(['like', 'bottom_text', $this->bottom_text])
-            ->andFilterWhere(['like', 'terms_and_conditions', $this->terms_and_conditions]);
+            ->andFilterWhere(['like', 'header_text', $this->header_text]);
 
         return $dataProvider;
     }

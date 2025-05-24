@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use kartik\file\FileInput;
 use app\models\QuotationTypes;
-use yii\bootstrap4\Tabs;
 use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
@@ -59,41 +58,12 @@ use dosamigos\ckeditor\CKEditor;
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Textos Predeterminados</h3>
+            <h3 class="card-title">Texto de Encabezado</h3>
         </div>
         <div class="card-body">
-            <?= Tabs::widget([
-                'items' => [
-                    [
-                        'label' => 'Encabezado',
-                        'content' => $form->field($model, 'header_text')->widget(CKEditor::class, [
-                            'options' => ['rows' => 6],
-                            'preset' => 'basic'
-                        ]),
-                        'active' => true
-                    ],
-                    [
-                        'label' => 'Empresa',
-                        'content' => $form->field($model, 'company_text')->widget(CKEditor::class, [
-                            'options' => ['rows' => 6],
-                            'preset' => 'basic'
-                        ]),
-                    ],
-                    [
-                        'label' => 'Pie de Página',
-                        'content' => $form->field($model, 'bottom_text')->widget(CKEditor::class, [
-                            'options' => ['rows' => 6],
-                            'preset' => 'basic'
-                        ]),
-                    ],
-                    [
-                        'label' => 'Términos y Condiciones',
-                        'content' => $form->field($model, 'terms_and_conditions')->widget(CKEditor::class, [
-                            'options' => ['rows' => 6],
-                            'preset' => 'basic'
-                        ]),
-                    ],
-                ],
+            <?= $form->field($model, 'header_text')->widget(CKEditor::class, [
+                'options' => ['rows' => 6],
+                'preset' => 'basic'
             ]) ?>
         </div>
     </div>

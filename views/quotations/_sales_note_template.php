@@ -121,8 +121,6 @@ date_default_timezone_set('America/Merida');
     </div>
     <?php endif; ?>
 
-    <div class="footer">
-        <?= $template->bottom_text ?>
-    </div>
+
 </body>
 </html> 

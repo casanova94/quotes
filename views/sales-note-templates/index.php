@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-           // 'id',
             [
                 'attribute' => 'quotation_type_id',
                 'value' => function($model) {
@@ -32,13 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'header_text:ntext',
-            'company_text:ntext',
             'created_at',
             'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
 
 </div> 

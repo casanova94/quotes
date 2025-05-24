@@ -14,9 +14,6 @@ use yii\helpers\Html;
  * @property int $quotation_type_id
  * @property string|null $logo
  * @property string|null $header_text
- * @property string|null $company_text
- * @property string|null $bottom_text
- * @property string|null $terms_and_conditions
  * @property string|null $created_at
  * @property string|null $updated_at
  *
@@ -42,7 +39,7 @@ class SalesNoteTemplates extends \yii\db\ActiveRecord
         return [
             [['quotation_type_id'], 'required'],
             [['quotation_type_id'], 'integer'],
-            [['header_text', 'company_text', 'bottom_text', 'terms_and_conditions'], 'string'],
+            [['header_text'], 'string'],
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['logo'], 'string', 'max' => 500],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
@@ -61,9 +58,6 @@ class SalesNoteTemplates extends \yii\db\ActiveRecord
             'logo' => 'Logo',
             'logoFile' => 'Logo',
             'header_text' => 'Texto de Encabezado',
-            'company_text' => 'Texto de Empresa',
-            'bottom_text' => 'Texto de Pie de Página',
-            'terms_and_conditions' => 'Términos y Condiciones',
             'created_at' => 'Fecha de Creación',
             'updated_at' => 'Fecha de Actualización',
         ];

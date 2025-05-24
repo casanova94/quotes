@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           // 'id',
             [
                 'attribute' => 'quotation_type_id',
                 'value' => function($model) {
@@ -48,9 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return nl2br($model->header_text);
                 }
             ],
-            'company_text:ntext',
-            'bottom_text:ntext',
-            'terms_and_conditions:ntext',
             'created_at',
             'updated_at',
         ],
