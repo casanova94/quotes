@@ -312,4 +312,55 @@ class QuotationsController extends Controller
         $fileName = 'Cotizacion_' . $quotation->id . '.pdf';
         return $mpdf->Output($fileName, \Mpdf\Output\Destination::INLINE);
     }
+
+    /**
+     * Genera una nota de venta en PDF basada en la cotización.
+     * @param int $id ID de la cotización
+     * @return mixed
+     */
+    public function actionGenerateSalesNote($id)
+    {
+        $model = $this->findModel($id);
+        
+        // Obtener la plantilla de nota de venta basada en el tipo de cotización
+        $template = \app\models\SalesNoteTemplates::findOne(['quotation_type_id' => $model->quotation_type_id]);
+        if (!$template) {
+            Yii::$app->session->setFlash('error', 'No se encontró una plantilla de nota de venta para este tipo de cotización.');
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        // Crear el PDF
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+        ]);
+
+        // Preparar los datos para la plantilla
+        $data = [
+            'quotation' => $model,
+            'client' => $model->client,
+            'details' => $model->quotationDetails,
+            'total' => $model->total_amount,
+            'footer' => $model->custom_footer,
+        ];
+
+        // Renderizar el contenido usando la plantilla
+        $content = $this->renderPartial('_sales_note_template', [
+            'template' => $template,
+            'data' => $data,
+        ]);
+
+        // Configurar el PDF
+        $mpdf->SetTitle('Nota de Venta #' . str_pad($model->id, 6, '0', STR_PAD_LEFT));
+        $mpdf->SetAuthor('Sistema de Cotizaciones');
+        $mpdf->SetCreator('Sistema de Cotizaciones');
+        $mpdf->WriteHTML($content);
+
+        // Generar el PDF
+        $mpdf->Output('Nota_de_Venta_' . str_pad($model->id, 6, '0', STR_PAD_LEFT) . '.pdf', 'I');
+    }
 }
