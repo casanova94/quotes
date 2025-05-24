@@ -26,7 +26,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'technician_id') ?>
 
-    <?= $form->field($model, 'status_id') ?>
+    <?= $form->field($model, 'status')->dropDownList(
+        ['Creada' => 'Creada', 'Aceptada' => 'Aceptada', 'Rechazada' => 'Rechazada'],
+        ['prompt' => 'Seleccione un estado']
+    ) ?>
 
     <?php // echo $form->field($model, 'total_amount') ?>
 

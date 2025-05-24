@@ -78,7 +78,13 @@ class ServiceOrdersController extends Controller
         
         // Si se proporciona un quotation_id, establecerlo en el modelo
         if ($quotation_id = Yii::$app->request->get('quotation_id')) {
-            $model->quotation_id = $quotation_id;
+            $quotation = \app\models\Quotations::findOne($quotation_id);
+            if ($quotation && $quotation->status === 'Aceptada') {
+                $model->quotation_id = $quotation_id;
+            } else {
+                Yii::$app->session->setFlash('error', 'Solo se pueden crear órdenes de servicio para cotizaciones Aceptadas.');
+                return $this->redirect(['index']);
+            }
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

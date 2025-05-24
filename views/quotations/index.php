@@ -54,17 +54,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Tipo',
             ],
             [
-                'attribute' => 'statusName',
+                'attribute' => 'status',
                 'value' => function ($model) {
-                    $status = $model->status;
-                    if ($status) {
-                        $color = $status->color_code ?: '#000'; // Usar el color guardado o negro por defecto
-                        return "<span style='color: {$color}; font-weight: bold;'>{$status->name}</span>";
-                    }
-                    return 'Desconocido';
+                    $statusColors = [
+                        'Creada' => 'info',
+                        'Aceptada' => 'success',
+                        'Rechazada' => 'danger'
+                    ];
+                    $color = $statusColors[$model->status] ?? 'secondary';
+                    return "<span class='badge badge-{$color}'>{$model->status}</span>";
                 },
-                'format' => 'raw', // Permitir HTML en el valor
+                'format' => 'raw',
                 'label' => 'Estado',
+                'filter' => Html::dropDownList(
+                    'QuotationsSearch[status]',
+                    $searchModel->status,
+                    ['Creada' => 'Creada', 'Aceptada' => 'Aceptada', 'Rechazada' => 'Rechazada'],
+                    ['class' => 'form-control', 'prompt' => 'Seleccione un estado']
+                ),
             ],
             [
                 'attribute' => 'created_at',
@@ -77,46 +84,46 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['class' => 'form-control'],
                 ]),
             ],
-                      [
-                        'headerOptions' => ['style' => 'width: 130px;'], // Ancho del encabezado,
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{create-order} {custom} {view} {update} {delete} ', // puedes agregar o quitar botones
-                    'buttons' => [
-                        'create-order' => function ($url, $model, $key) {
-                            return Html::a('<i class="fas fa-clipboard-list"></i>', ['service-orders/create', 'quotation_id' => $model->id], [
-                                'title' => 'Crear Orden de Servicio',
-                                'class' => 'btn btn-xs btn-info mt-3 mt-md-0',
-                            ]);
-                        },
-                        'view' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fas fa-eye"></i>', $url, [
-                                        'title' => 'Ver',
-                                        'class' => 'btn btn-xs btn-primary mt-3 mt-md-0',
-                                    ]);
-                                },
-                        'update' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fas fa-edit"></i>', $url, [
-                                        'title' => 'Actualizar',
-                                        'class' => 'btn btn-xs btn-warning mt-3 mt-md-0',
-                                    ]);
-                                },
-                        'delete' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fas fa-trash"></i>', $url, [
-                                        'title' => 'Eliminar',
-                                        'class' => 'btn btn-xs btn-danger mt-3 mt-md-0',
-                                        'data-confirm' => '¿Estás seguro de que deseas eliminar este elemento?',
-                                        'data-method' => 'post',
-                                    ]);
-                                },
-                         'custom' => function ($url, $model, $key) {
-                             return Html::a('<i class="fas fa-file-pdf"></i>', ['quotations/generate-pdf', 'id' => $model->id], [
-                                 'title' => 'Generar PDF',
-                                 'data-pjax' => '0',
-                                 'class' => 'btn btn-xs btn-danger mt-3 mt-md-0',
-                             ]);
-                         }
-                    ],
+            [
+                'headerOptions' => ['style' => 'width: 130px;'], // Ancho del encabezado,
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{create-order} {custom} {view} {update} {delete} ', // puedes agregar o quitar botones
+                'buttons' => [
+                    'create-order' => function ($url, $model, $key) {
+                        return Html::a('<i class="fas fa-clipboard-list"></i>', ['service-orders/create', 'quotation_id' => $model->id], [
+                            'title' => 'Crear Orden de Servicio',
+                            'class' => 'btn btn-xs btn-info mt-3 mt-md-0',
+                        ]);
+                    },
+                    'view' => function ($url, $model, $key) {
+                                return Html::a('<i class="fas fa-eye"></i>', $url, [
+                                    'title' => 'Ver',
+                                    'class' => 'btn btn-xs btn-primary mt-3 mt-md-0',
+                                ]);
+                            },
+                    'update' => function ($url, $model, $key) {
+                                return Html::a('<i class="fas fa-edit"></i>', $url, [
+                                    'title' => 'Actualizar',
+                                    'class' => 'btn btn-xs btn-warning mt-3 mt-md-0',
+                                ]);
+                            },
+                    'delete' => function ($url, $model, $key) {
+                                return Html::a('<i class="fas fa-trash"></i>', $url, [
+                                    'title' => 'Eliminar',
+                                    'class' => 'btn btn-xs btn-danger mt-3 mt-md-0',
+                                    'data-confirm' => '¿Estás seguro de que deseas eliminar este elemento?',
+                                    'data-method' => 'post',
+                                ]);
+                            },
+                     'custom' => function ($url, $model, $key) {
+                         return Html::a('<i class="fas fa-file-pdf"></i>', ['quotations/generate-pdf', 'id' => $model->id], [
+                             'title' => 'Generar PDF',
+                             'data-pjax' => '0',
+                             'class' => 'btn btn-xs btn-danger mt-3 mt-md-0',
+                         ]);
+                     }
                 ],
+            ],
         ],
     ]); ?>
 </div>

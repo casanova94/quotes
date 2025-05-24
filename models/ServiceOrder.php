@@ -97,11 +97,8 @@ class ServiceOrder extends ActiveRecord
     public function validateQuotationStatus($attribute, $params)
     {
         $quotation = Quotations::findOne($this->quotation_id);
-        if ($quotation) {
-            $validStatuses = ['Aceptada', 'Autorizada', 'Aprobada'];
-            if (!in_array($quotation->status->name, $validStatuses)) {
-                $this->addError($attribute, 'La cotización debe estar Aceptada, Autorizada o Aprobada para crear una orden de servicio.');
-            }
+        if ($quotation && $quotation->status !== 'Aceptada') {
+            $this->addError($attribute, 'Solo se pueden crear órdenes de servicio para cotizaciones Aceptadas.');
         }
     }
 

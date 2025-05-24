@@ -64,8 +64,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => $model->quotationType ? $model->quotationType->name : '',
                     ],
                     [
-                        'attribute' => 'status_id',
-                        'value' => $model->status ? $model->status->name : '',
+                        'attribute' => 'status',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            $statusColors = [
+                                'Creada' => 'info',
+                                'Aceptada' => 'success',
+                                'Rechazada' => 'danger'
+                            ];
+                            $color = $statusColors[$model->status] ?? 'secondary';
+                            return "<span class='badge badge-{$color}'>{$model->status}</span>";
+                        },
                     ],
                     'total_amount',
                     'custom_footer:ntext',

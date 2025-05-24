@@ -21,8 +21,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'quotation_id')->widget(Select2::class, [
         'data' => ArrayHelper::map(
             Quotations::find()
-                ->joinWith('status')
-                ->where(['quotation_statuses.name' => ['Aceptada', 'Autorizada', 'Aprobada']])
+                ->where(['status' => 'Aceptada'])
                 ->all(),
             'id',
             function($model) {

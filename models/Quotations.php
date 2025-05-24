@@ -11,7 +11,7 @@ use Yii;
  * @property string|null $name
  * @property int $client_id
  * @property int $quotation_type_id
- * @property int $status_id
+ * @property string $status
  * @property float|null $total_amount
  * @property string|null $custom_footer
  * @property string|null $created_at
@@ -20,7 +20,6 @@ use Yii;
  * @property Clients $client
  * @property QuotationDetails[] $quotationDetails
  * @property QuotationTypes $quotationType
- * @property QuotationStatuses $status
  */
 class Quotations extends \yii\db\ActiveRecord
 {
@@ -42,14 +41,15 @@ class Quotations extends \yii\db\ActiveRecord
         return [
             [['custom_footer'], 'default', 'value' => null],
             [['total_amount'], 'default', 'value' => 0.00],
-            [['client_id', 'quotation_type_id', 'status_id'], 'required'],
-            [['client_id', 'quotation_type_id', 'status_id'], 'integer'],
+            [['status'], 'default', 'value' => 'Creada'],
+            [['client_id', 'quotation_type_id', 'status'], 'required'],
+            [['client_id', 'quotation_type_id'], 'integer'],
             [['total_amount'], 'number'],
-            [['custom_footer', 'name'], 'string'],
+            [['custom_footer', 'name', 'status'], 'string'],
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clients::class, 'targetAttribute' => ['client_id' => 'id']],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationStatuses::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['status'], 'in', 'range' => ['Creada', 'Aceptada', 'Rechazada']],
         ];
     }
 
@@ -63,7 +63,7 @@ class Quotations extends \yii\db\ActiveRecord
             'name' => 'Nombre de la Cotización',
             'client_id' => 'Cliente',
             'quotation_type_id' => 'Tipo de Cotización',
-            'status_id' => 'Estado',
+            'status' => 'Estado',
             'total_amount' => 'Monto Total',
             'custom_footer' => 'Pie de Página Personalizado',
             'created_at' => 'Fecha de Creación',
@@ -116,16 +116,6 @@ class Quotations extends \yii\db\ActiveRecord
     public function getQuotationType()
     {
         return $this->hasOne(QuotationTypes::class, ['id' => 'quotation_type_id']);
-    }
-
-    /**
-     * Gets query for [[Status]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStatus()
-    {
-        return $this->hasOne(QuotationStatuses::class, ['id' => 'status_id']);
     }
 
     /**

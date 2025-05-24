@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Clients;
 use app\models\QuotationTypes;
-use app\models\QuotationStatuses;
 use app\models\Services;
 use yii\bootstrap4\Modal; 
 
@@ -53,8 +52,8 @@ use yii\bootstrap4\Modal;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'status_id')->dropDownList(
-                ArrayHelper::map(QuotationStatuses::find()->all(), 'id', 'name'),
+            <?= $form->field($model, 'status')->dropDownList(
+                ['Creada' => 'Creada', 'Aceptada' => 'Aceptada', 'Rechazada' => 'Rechazada'],
                 ['prompt' => 'Seleccione un estado']
             ) ?>
         </div>

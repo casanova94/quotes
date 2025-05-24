@@ -3,7 +3,6 @@ date_default_timezone_set('America/Mexico_City');
 
 use app\models\Clients;
 use app\models\Quotations;
-use app\models\QuotationStatuses;
 
 $this->title = 'Panel de control';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
@@ -24,9 +23,6 @@ $clientsToday = Clients::find()
 $quotationsToday = Quotations::find()
     ->where(['between', 'created_at', $startOfDay, $endOfDay])
     ->count();
-
-// Consultar los estados de las cotizaciones
-$statuses = QuotationStatuses::find()->all();
 ?>
 
 <div class="container-fluid">
@@ -105,40 +101,6 @@ $statuses = QuotationStatuses::find()->all();
                                 ]
                             ]) ?>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Resumen de cotizaciones por estado</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <?php foreach ($statuses as $status): ?>
-                            <?php
-                            // Obtener el número de cotizaciones para el estado actual
-                            $count = Quotations::find()->where(['status_id' => $status->id])->count();
-
-                            // Usar el color definido en color_code o un color predeterminado
-                            $color = $status->color_code ?: 'secondary'; // Si no hay color definido, usar 'secondary'
-                            ?>
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="card">
-                                    <!-- Usar el color del estado en el encabezado -->
-                                    <div class="card-header" style="background-color: <?= $color ?>; color: #fff;">
-                                        <h5 class="card-title"><i class="fas fa-info-circle"></i>
-                                            <?= htmlspecialchars($status->name) ?>
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="display-4 text-center"><?= $count ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
