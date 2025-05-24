@@ -55,12 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         ) : '',
                     ],
                     [
-                        'attribute' => 'quotation_type_id',
-                        'value' => $model->quotationType ? $model->quotationType->name : '',
+                        'label' => 'Dirección',
+                        'value' => $model->client->address
                     ],
                     [
-                        'attribute' => 'technician_id',
-                        'value' => $model->technician ? $model->technician->name : '',
+                        'attribute' => 'quotation_type_id',
+                        'value' => $model->quotationType ? $model->quotationType->name : '',
                     ],
                     [
                         'attribute' => 'status_id',

@@ -52,14 +52,9 @@ class Technicians extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Quotations]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getQuotations()
+    public function getServiceOrders()
     {
-        return $this->hasMany(Quotations::class, ['technician_id' => 'id']);
+        return $this->hasMany(ServiceOrder::class, ['technician_id' => 'id']);
     }
 
 }

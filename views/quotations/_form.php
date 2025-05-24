@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Clients;
 use app\models\QuotationTypes;
-use app\models\Technicians;
 use app\models\QuotationStatuses;
 use app\models\Services;
 use yii\bootstrap4\Modal; 
@@ -35,7 +34,7 @@ use yii\bootstrap4\Modal;
         </div>
     </div>
              <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
            <div class="form-group field-quotation-client_id">
     <?= $form->field($model, 'client_id')->dropDownList(
         ArrayHelper::map(Clients::find()->all(), 'id', 'name'),
@@ -44,28 +43,22 @@ use yii\bootstrap4\Modal;
 
 </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <?= $form->field($model, 'quotation_type_id')->dropDownList(
                 ArrayHelper::map(QuotationTypes::find()->all(), 'id', 'name'),
                 ['prompt' => 'Seleccione un tipo de cotización']
             ) ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'technician_id')->dropDownList(
-                ArrayHelper::map(Technicians::find()->all(), 'id', 'name'),
-                ['prompt' => 'Seleccione un técnico']
-            ) ?>
-        </div>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <?= $form->field($model, 'status_id')->dropDownList(
                 ArrayHelper::map(QuotationStatuses::find()->all(), 'id', 'name'),
                 ['prompt' => 'Seleccione un estado']
             ) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true, 'readonly' => true,'class' => 'form-control bg-light'])->hint('El monto total es calculado automáticamente') ?>
         </div>
     </div>

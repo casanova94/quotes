@@ -11,7 +11,6 @@ use Yii;
  * @property string|null $name
  * @property int $client_id
  * @property int $quotation_type_id
- * @property int|null $technician_id
  * @property int $status_id
  * @property float|null $total_amount
  * @property string|null $custom_footer
@@ -22,7 +21,6 @@ use Yii;
  * @property QuotationDetails[] $quotationDetails
  * @property QuotationTypes $quotationType
  * @property QuotationStatuses $status
- * @property Technicians $technician
  */
 class Quotations extends \yii\db\ActiveRecord
 {
@@ -42,16 +40,15 @@ class Quotations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['technician_id', 'custom_footer'], 'default', 'value' => null],
+            [['custom_footer'], 'default', 'value' => null],
             [['total_amount'], 'default', 'value' => 0.00],
             [['client_id', 'quotation_type_id', 'status_id'], 'required'],
-            [['client_id', 'quotation_type_id', 'technician_id', 'status_id'], 'integer'],
+            [['client_id', 'quotation_type_id', 'status_id'], 'integer'],
             [['total_amount'], 'number'],
             [['custom_footer', 'name'], 'string'],
             [['created_at', 'updated_at'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['client_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clients::class, 'targetAttribute' => ['client_id' => 'id']],
             [['quotation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationTypes::class, 'targetAttribute' => ['quotation_type_id' => 'id']],
-            [['technician_id'], 'exist', 'skipOnError' => true, 'targetClass' => Technicians::class, 'targetAttribute' => ['technician_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => QuotationStatuses::class, 'targetAttribute' => ['status_id' => 'id']],
         ];
     }
@@ -66,7 +63,6 @@ class Quotations extends \yii\db\ActiveRecord
             'name' => 'Nombre de la Cotización',
             'client_id' => 'Cliente',
             'quotation_type_id' => 'Tipo de Cotización',
-            'technician_id' => 'Técnico',
             'status_id' => 'Estado',
             'total_amount' => 'Monto Total',
             'custom_footer' => 'Pie de Página Personalizado',
@@ -130,16 +126,6 @@ class Quotations extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(QuotationStatuses::class, ['id' => 'status_id']);
-    }
-
-    /**
-     * Gets query for [[Technician]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTechnician()
-    {
-        return $this->hasOne(Technicians::class, ['id' => 'technician_id']);
     }
 
 }

@@ -42,8 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'scheduledDateTime',
             [
                 'attribute' => 'technician_id',
+                'format' => 'raw',
                 'value' => function($model) {
-                    return $model->technician ? $model->technician->name : '';
+                    return Html::a($model->technician ? $model->technician->name : '', ['technicians/view', 'id' => $model->technician->id], ['class' => 'btn btn-link']);
                 }
             ],
 

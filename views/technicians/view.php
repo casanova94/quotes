@@ -44,47 +44,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
      <div class="card mt-3">
         <div class="card-header">
-            <h3 class="card-title">Servicios asignados</h3>
+            <h3 class="card-title">Ordenes de servicio</h3>
         </div>
          <div class="card-body">
     <div class="table-responsive">
         <?= GridView::widget([
-            'dataProvider' => new \yii\data\ActiveDataProvider( ['query' =>  $model->getQuotations()]),
+            'dataProvider' => new \yii\data\ActiveDataProvider( ['query' =>  $model->getServiceOrders()]),
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'attribute' => 'id',
-                    'label' => 'Folio',
+                    'label' => 'Cotización',
                     'value' => function ($model) {
-                        return '#' . str_pad($model->id, 6, '0', STR_PAD_LEFT);
+                        return $model->quotation ? Html::a(str_pad($model->quotation->id, 6, '0', STR_PAD_LEFT).' - '. $model->quotation->name . ' - ' . $model->quotation->client->name, ['quotations/view', 'id' => $model->quotation->id], ['class' => 'btn btn-link']) : '';
                     },
+                    'format' => 'raw',
                 ],
-                'status.name:text:Estado',
-                [
-                    'attribute' => 'quotation_type_id',
-                    'value' => function ($model) {
-                        return $model->quotationType ? $model->quotationType->name : '';
-                    },
-                ],
-                [
-                    'attribute' => 'client_id',
-                    'format' => 'raw', // Permitir HTML en el valor
-                    'value' => function ($model) {
-                        return $model->client ? Html::a(
-                            $model->client->name,
-                            ['clients/view', 'id' => $model->client->id],
-                            ['class' => 'btn btn-link px-0 mx-0']
-                        ) : '';
-                    },
-                ],
-                'created_at:date',
+                'status',
+                'creation_date:date',
+                'scheduledDateTime:datetime',
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
-                            return Html::a('<i class="fas fa-eye"></i>', ['quotations/view', 'id' => $model->id], [
-                                'title' => 'Ver Cotización',
+                            return Html::a('<i class="fas fa-eye"></i>', ['service-orders/view', 'id' => $model->id], [
+                                'title' => 'Ver Orden de servicio',
                                 'class' => 'btn btn-primary btn-sm',
                             ]);
                         },

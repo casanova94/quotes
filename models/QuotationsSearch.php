@@ -13,7 +13,6 @@ class QuotationsSearch extends Quotations
 {   
     public $clientName;
     public $quotationTypeName;
-    public $technicianName;
     public $statusName;
 
     /**
@@ -22,10 +21,10 @@ class QuotationsSearch extends Quotations
     public function rules()
     {
         return [
-            [['id', 'client_id', 'quotation_type_id', 'technician_id', 'status_id'], 'integer'],
+            [['id', 'client_id', 'quotation_type_id', 'status_id'], 'integer'],
             [['total_amount'], 'number'],
             [['custom_footer', 'created_at', 'updated_at'], 'safe'],
-            [['clientName', 'quotationTypeName', 'technicianName', 'statusName', 'name'], 'safe'],
+            [['clientName', 'quotationTypeName', 'statusName', 'name'], 'safe'],
         ];
     }
 
@@ -38,7 +37,6 @@ class QuotationsSearch extends Quotations
             'id' => 'ID',
             'client_id' => 'Cliente',
             'quotation_type_id' => 'Tipo de Cotización',
-            'technician_id' => 'Técnico',
             'status_id' => 'Estado',
             'total_amount' => 'Monto Total',
             'custom_footer' => 'Pie de Página Personalizado',
@@ -46,7 +44,6 @@ class QuotationsSearch extends Quotations
             'updated_at' => 'Fecha de Actualización',
             'clientName' => 'Cliente',
             'quotationTypeName' => 'Tipo de Cotización',
-            'technicianName' => 'Técnico',
             'statusName' => 'Estado',
             'name' => 'Nombre',
         ];
@@ -72,7 +69,7 @@ class QuotationsSearch extends Quotations
     public function search($params, $formName = null)
     {
         $query = Quotations::find()
-            ->joinWith(['client', 'quotationType', 'technician', 'status']);
+            ->joinWith(['client', 'quotationType', 'status']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -86,10 +83,6 @@ class QuotationsSearch extends Quotations
                     'quotationTypeName' => [
                         'asc' => ['quotation_types.name' => SORT_ASC],
                         'desc' => ['quotation_types.name' => SORT_DESC],
-                    ],
-                    'technicianName' => [
-                        'asc' => ['technicians.name' => SORT_ASC],
-                        'desc' => ['technicians.name' => SORT_DESC],
                     ],
                     'statusName' => [
                         'asc' => ['quotation_statuses.name' => SORT_ASC],
@@ -109,30 +102,24 @@ class QuotationsSearch extends Quotations
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
-           // 'quotations.id' => $this->id,
             'quotations.client_id' => $this->client_id,
             'quotations.quotation_type_id' => $this->quotation_type_id,
-            'quotations.technician_id' => $this->technician_id,
             'quotations.status_id' => $this->status_id,
             'quotations.total_amount' => $this->total_amount,
-            //'quotations.created_at' => $this->created_at,
             'quotations.updated_at' => $this->updated_at
         ]);
 
         $query->andFilterWhere(['like', 'quotations.custom_footer', $this->custom_footer])
             ->andFilterWhere(['like', 'clients.name', $this->clientName])
             ->andFilterWhere(['like', 'quotation_types.name', $this->quotationTypeName])
-            ->andFilterWhere(['like', 'technicians.name', $this->technicianName])
             ->andFilterWhere(['like', 'quotation_statuses.name', $this->statusName])
             ->andFilterWhere(['like', 'quotations.id', $this->id])
             ->andFilterWhere(['like', 'quotations.name', $this->name]);
 
-        
         if (!empty($this->created_at)) {
-                $fecha = $this->created_at;
-                $query->andFilterWhere(['between', 'quotations.created_at', "$fecha 00:00:00", "$fecha 23:59:59"]);
+            $fecha = $this->created_at;
+            $query->andFilterWhere(['between', 'quotations.created_at', "$fecha 00:00:00", "$fecha 23:59:59"]);
         }
 
         return $dataProvider;
