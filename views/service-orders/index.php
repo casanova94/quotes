@@ -14,9 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="service-orders-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+    <p class="text-right">
         <?= Html::a('Crear Orden de Servicio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
