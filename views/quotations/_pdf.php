@@ -113,8 +113,18 @@ use yii\helpers\Html;
             <?php endforeach; ?>
             <tr>
                 <td colspan="4"></td>
-                <td ><strong>Total:</strong></td>
-                <td><strong><?=Yii::$app->formatter->asCurrency($quotation->total_amount) ?></strong></td>
+                <td><strong>Total:</strong></td>
+                <td><strong><?php
+                    if (empty($quotation->total_amount) || $quotation->total_amount == 0) {
+                        $total = 0;
+                        foreach ($quotation->quotationDetails as $detail) {
+                            $total += $detail->quantity * $detail->unit_price;
+                        }
+                        echo Yii::$app->formatter->asCurrency($total);
+                    } else {
+                        echo Yii::$app->formatter->asCurrency($quotation->total_amount);
+                    }
+                ?></strong></td>
             </tr>
         </tbody>
     </table>

@@ -7,6 +7,7 @@ $client = $data['client'];
 $details = $data['details'];
 $total = $data['total'];
 $footer = $data['footer'];
+date_default_timezone_set('America/Merida');
 ?>
 
 <!DOCTYPE html>
@@ -20,28 +21,19 @@ $footer = $data['footer'];
             font-size: 12px;
             line-height: 1.4;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .company-info {
-            margin-bottom: 20px;
-        }
-        .client-info {
-            margin-bottom: 20px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
         th, td {
-            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+            border: 1px solid #ddd;
         }
         th {
-            background-color: #f5f5f5;
+            background-color: #1773c8;
+            color: white;
         }
         .total {
             text-align: right;
@@ -56,26 +48,40 @@ $footer = $data['footer'];
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>NOTA DE VENTA</h1>
-        <h2>Folio: #<?= str_pad($quotation->id, 6, '0', STR_PAD_LEFT) ?></h2>
+    <div>
+        <h1 style="background-color:#f2f2f2; margin-bottom: 10px;text-align: center;">NOTA DE VENTA</h1>
+        <div style="width: 100%; overflow: hidden;">
+            <div style="width: 50%; float: right;padding-top:30px;">
+                <?= $template->header_text ?>
+            </div>
+            <?php if ($template->logo): ?>
+                <div style="float: left; text-align: center;width: 50%;">
+                    <img src="<?= Yii::getAlias('@web/' . $template->logo) ?>" style="max-width: 200px; height: auto;margin-top: auto;margin-bottom: auto;">
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <div class="company-info">
-        <?php if ($template->logo): ?>
-            <img src="<?= Yii::getAlias('@web/' . $template->logo) ?>" style="max-width: 200px; margin-bottom: 20px;">
-        <?php endif; ?>
-        <?= $template->header_text ?>
-        <?= $template->company_text ?>
-    </div>
-
-    <div class="client-info">
-        <h3>Información del Cliente</h3>
-        <p><strong>Nombre:</strong> <?= Html::encode($client->name) ?></p>
-        <p><strong>Dirección:</strong> <?= Html::encode($client->address) ?></p>
-        <p><strong>Teléfono:</strong> <?= Html::encode($client->phone) ?></p>
-        <p><strong>Email:</strong> <?= Html::encode($client->email) ?></p>
-    </div>
+    <table>
+        <tr>
+            <th>Cliente</th>
+            <td><?= Html::encode($client->name) ?></td>
+            <th>Folio</th>
+            <td>#<?= str_pad($quotation->id, 6, '0', STR_PAD_LEFT) ?></td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td><?= Html::encode($client->phone) ?></td>
+            <th>Fecha</th>
+            <td><?= Yii::$app->formatter->asDate(date('Y-m-d')) ?></td>
+        </tr>
+        <tr>
+            <th>Dirección</th>
+            <td><?= Html::encode($client->address) ?></td>
+            <th>Ciudad</th>
+            <td>Mérida, Yucatán</td>
+        </tr>
+    </table>
 
     <table>
         <thead>
@@ -88,13 +94,18 @@ $footer = $data['footer'];
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($details as $detail): ?>
+            <?php 
+            $total = 0;
+            foreach ($details as $detail): 
+                $subtotal = $detail->quantity * $detail->unit_price;
+                $total += $subtotal;
+            ?>
             <tr>
                 <td><?= Html::encode($detail->service->name) ?></td>
                 <td><?= Html::encode($detail->description) ?></td>
                 <td><?= $detail->quantity ?></td>
                 <td><?= Yii::$app->formatter->asCurrency($detail->unit_price) ?></td>
-                <td><?= Yii::$app->formatter->asCurrency($detail->subtotal) ?></td>
+                <td><?= Yii::$app->formatter->asCurrency($subtotal) ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -112,7 +123,6 @@ $footer = $data['footer'];
 
     <div class="footer">
         <?= $template->bottom_text ?>
-        <?= $template->terms_and_conditions ?>
     </div>
 </body>
 </html> 

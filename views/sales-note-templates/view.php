@@ -41,7 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->logo ? Html::img('@web/' . $model->logo, ['style' => 'max-width: 200px;']) : '';
                 }
             ],
-            'header_text:ntext',
+            [
+                'attribute' => 'header_text',
+                'format' => 'html',
+                'value' => function($model) {
+                    return nl2br($model->header_text);
+                }
+            ],
             'company_text:ntext',
             'bottom_text:ntext',
             'terms_and_conditions:ntext',

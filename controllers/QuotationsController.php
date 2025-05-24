@@ -303,7 +303,7 @@ class QuotationsController extends Controller
             <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
                 ' . nl2br($template->terms_and_conditions) . '
                 <div style="text-align: center; margin-top: 5px;">
-                    {PAGENO}/{nbpg}
+                    Página {PAGENO} de {nbpg}
                 </div>
             </div>
         ');
@@ -353,6 +353,15 @@ class QuotationsController extends Controller
             'margin_top' => 15,
             'margin_bottom' => 15,
         ]);
+
+        // Configurar el pie de página con términos y condiciones y número de página
+        $mpdf->SetHTMLFooter('
+            <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                <div style="margin-top: 5px;">
+                    Página {PAGENO} de {nbpg}
+                </div>
+            </div>
+        ');
 
         // Preparar los datos para la plantilla
         $data = [
