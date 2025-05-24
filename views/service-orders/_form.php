@@ -7,6 +7,7 @@ use kartik\select2\Select2;
 use app\models\Quotations;
 use app\models\Technicians;
 use yii\helpers\ArrayHelper;
+use app\components\helpers\UserHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\ServiceOrder */
 /* @var $form yii\widgets\ActiveForm */
@@ -28,7 +29,10 @@ use yii\helpers\ArrayHelper;
                 return 'Cotización #' . str_pad($model->id, 6, '0', STR_PAD_LEFT) . ' - ' . $model->name . ' - ' . $model->client->name;
             }
         ),
-        'options' => ['placeholder' => 'Seleccione una cotización...'],
+        'options' => [
+            'placeholder' => 'Seleccione una cotización...',
+            'disabled' => UserHelper::isTechnician()
+        ],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -41,10 +45,16 @@ use yii\helpers\ArrayHelper;
         'Cancelado' => 'Cancelado',
     ]) ?>
 
-    <?= $form->field($model, 'notes')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'notes')->textarea([
+        'rows' => 6,
+        'readonly' => UserHelper::isTechnician()
+    ]) ?>
 
     <?= $form->field($model, 'scheduledDateTime')->widget(DateTimePicker::class, [
-        'options' => ['placeholder' => 'Seleccione fecha y hora...'],
+        'options' => [
+            'placeholder' => 'Seleccione fecha y hora...',
+            'readonly' => UserHelper::isTechnician()
+        ],
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'yyyy-mm-dd hh:ii:ss'
@@ -53,7 +63,10 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'technician_id')->widget(Select2::class, [
         'data' =>  ArrayHelper::map(Technicians::find()->all(), 'id', 'name'),
-        'options' => ['placeholder' => 'Seleccione un técnico...'],
+        'options' => [
+            'placeholder' => 'Seleccione un técnico...',
+            'disabled' => UserHelper::isTechnician()
+        ],
         'pluginOptions' => [
             'allowClear' => true
         ],

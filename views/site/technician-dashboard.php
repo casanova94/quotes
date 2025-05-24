@@ -35,7 +35,7 @@ $serviceOrders = ServiceOrder::find()
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Cotización</th>
+                                
                                     <th>Cliente</th>
                                     <th>Estado</th>
                                     <th>Fecha Programada</th>
@@ -51,13 +51,7 @@ $serviceOrders = ServiceOrder::find()
                                     <?php foreach ($serviceOrders as $index => $order): ?>
                                         <tr>
                                             <td><?= $index + 1 ?></td>
-                                            <td>
-                                                <?= Html::a(
-                                                    str_pad($order->quotation->id, 6, '0', STR_PAD_LEFT) . ' - ' . $order->quotation->name,
-                                                    ['/quotations/view', 'id' => $order->quotation->id],
-                                                    ['class' => 'btn btn-link']
-                                                ) ?>
-                                            </td>
+
                                             <td><?= $order->quotation->client->name ?></td>
                                             <td>
                                                 <span class="badge badge-<?= $order->status == ServiceOrder::STATUS_PENDING ? 'warning' : 

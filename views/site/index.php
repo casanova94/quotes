@@ -206,6 +206,7 @@ $recentOrders = ServiceOrder::find()
                                     <tr>
                                         <th>#</th>
                                         <th>Cliente</th>
+                                        <th>Técnico</th>
                                         <th>Estado</th>
                                         <th>Fecha Programada</th>
                                         <?php if (!UserHelper::isTechnician()): ?>
@@ -219,6 +220,7 @@ $recentOrders = ServiceOrder::find()
                                         <tr>
                                             <td><?= str_pad($order->id, 6, '0', STR_PAD_LEFT) ?></td>
                                             <td><?= $order->quotation->client->name ?></td>
+                                            <td><?= $order->technician->name ?></td>
                                             <td>
                                                 <span class="badge badge-<?= $order->status == ServiceOrder::STATUS_PENDING ? 'warning' : 
                                                     ($order->status == ServiceOrder::STATUS_IN_PROGRESS ? 'info' : 
