@@ -301,6 +301,9 @@ class QuotationsController extends Controller
         // Configurar el pie de página con los términos y condiciones y número de página
         $mpdf->SetHTMLFooter('
             <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                ' . nl2br($template->terms_and_conditions) . '
+            </div>
+             <div style="text-align: center; font-size: 10px; padding-top: 10px;">
                 <div style="text-align: center; margin-top: 5px;">
                     Página {PAGENO} de {nbpg}
                 </div>
@@ -316,8 +319,9 @@ class QuotationsController extends Controller
         // Si solo hay una página, eliminar el número de página
         if ($totalPages <= 1) {
             $mpdf->SetHTMLFooter('
-                <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
-                </div>
+              <div style="text-align: center; font-size: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                ' . nl2br($template->terms_and_conditions) . '
+            </div>
             ');
         }
 
