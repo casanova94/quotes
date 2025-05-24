@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Technicians;
 use app\models\TechniciansSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use app\components\helpers\UserHelper;
 
 /**
  * TechniciansController implements the CRUD actions for Technicians model.
@@ -21,19 +23,21 @@ class TechniciansController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [              'access' => [
+            [
+                'access' => [
                     'class' => AccessControl::class,
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['@'], // Allow authenticated users
+                            'roles' => ['@'],
                         ],
                     ],
                 ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
+                        'reset-password' => ['GET', 'POST'],
                     ],
                 ],
             ]
@@ -77,9 +81,11 @@ class TechniciansController extends Controller
     public function actionCreate()
     {
         $model = new Technicians();
+        $model->scenario = Technicians::SCENARIO_CREATE;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Técnico creado exitosamente.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -101,12 +107,69 @@ class TechniciansController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Technicians::SCENARIO_UPDATE;
+        
+        // Cargar el nombre de usuario del técnico
+        if ($model->user) {
+            $model->username = $model->user->username;
+        }
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Técnico actualizado exitosamente.');
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates the password of a Technicians model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdatePassword($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Technicians::SCENARIO_UPDATE_PASSWORD;
+
+        if ($model->load(Yii::$app->request->post()) && $model->updatePassword()) {
+            Yii::$app->session->setFlash('success', 'Contraseña actualizada exitosamente.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update-password', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets the password of a Technicians model.
+     * If reset is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionResetPassword($id)
+    {
+        if (!UserHelper::isAdmin()) {
+            throw new \yii\web\ForbiddenHttpException('No tiene permiso para realizar esta acción.');
+        }
+
+        $model = $this->findModel($id);
+        $model->scenario = Technicians::SCENARIO_RESET_PASSWORD;
+
+        if ($model->load(Yii::$app->request->post()) && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'Contraseña reseteada exitosamente.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('reset-password', [
             'model' => $model,
         ]);
     }
@@ -120,7 +183,12 @@ class TechniciansController extends Controller
      */
     public function actionDelete($id)
     {
+        if (!UserHelper::isAdmin()) {
+            throw new \yii\web\ForbiddenHttpException('No tiene permiso para realizar esta acción.');
+        }
+
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', 'Técnico eliminado exitosamente.');
 
         return $this->redirect(['index']);
     }
@@ -138,6 +206,6 @@ class TechniciansController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('El técnico solicitado no existe.');
     }
 }

@@ -17,8 +17,8 @@ class TechniciansSearch extends Technicians
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name', 'phone', 'email'], 'safe'],
+            [['id', 'user_id'], 'integer'],
+            [['name', 'phone', 'email', 'user.username', 'user.status'], 'safe'],
         ];
     }
 
@@ -48,27 +48,20 @@ class TechniciansSearch extends Technicians
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     * @param string|null $formName Form name to be used into `->load()` method.
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null)
+    public function search($params)
     {
-        $query = Technicians::find();
+        $query = Technicians::find()->joinWith('user');
+
+        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'attributes' => [
-                    'id',
-                    'name',
-                    'phone',
-                    'email',
-                ],
-            ],
         ]);
 
-        $this->load($params, $formName);
+        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -79,11 +72,14 @@ class TechniciansSearch extends Technicians
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'user_id' => $this->user_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'email', $this->email]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')])
+            ->andFilterWhere(['user.status' => $this->getAttribute('user.status')]);
 
         return $dataProvider;
     }

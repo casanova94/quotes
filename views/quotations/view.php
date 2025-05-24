@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use app\components\helpers\UserHelper;
 
 /** @var yii\web\View $this */
 /** @var app\models\Quotations $model */
@@ -19,13 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Generar nota de venta', ['generate-sales-note', 'id' => $model->id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         <?= Html::a('Crear Orden de Servicio', ['service-orders/create', 'quotation_id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => '¿Está seguro de eliminar esta cotización?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (UserHelper::isAdmin()): ?>
+            <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => '¿Está seguro de eliminar esta cotización?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
     </p>
 
     <div class="card">

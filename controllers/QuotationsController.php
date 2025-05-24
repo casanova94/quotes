@@ -34,6 +34,11 @@ class QuotationsController extends Controller
                             'allow' => true,
                             'roles' => ['@'],
                         ],
+                        [
+                            'allow' => true,
+                            'actions' => ['delete'],
+                            'roles' => ['admin'],
+                        ],
                     ],
                 ],
                 'verbs' => [

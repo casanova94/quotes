@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\components\helpers\UserHelper;
 
 ?>
 <!-- Navbar -->
@@ -12,6 +13,11 @@ use yii\helpers\Html;
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <span class="nav-link">
+                <i class="fas fa-user"></i> <?= Yii::$app->user->identity->username ?>
+            </span>
+        </li>
         <li class="nav-item">
             <?= Html::a('<i class="fas fa-sign-out-alt"></i>', ['/site/logout'], ['data-method' => 'post', 'class' => 'nav-link']) ?>
         </li>

@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\QuotationsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 use yii\jui\DatePicker;
+use app\components\helpers\UserHelper;
 
 $this->title = 'Cotizaciones';
 $this->params['breadcrumbs'][] = $this->title;
@@ -87,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'headerOptions' => ['style' => 'width: 130px;'], // Ancho del encabezado,
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{create-order} {custom} {view} {update} {delete} ', // puedes agregar o quitar botones
+                'template' => '{create-order} {custom} {view} {update}' . (UserHelper::isAdmin() ? ' {delete}' : ''), // puedes agregar o quitar botones
                 'buttons' => [
                     'create-order' => function ($url, $model, $key) {
                         return Html::a('<i class="fas fa-clipboard-list"></i>', ['service-orders/create', 'quotation_id' => $model->id], [

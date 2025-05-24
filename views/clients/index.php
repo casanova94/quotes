@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\components\helpers\UserHelper;
 /** @var yii\web\View $this */
 /** @var app\models\ClientsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'created_at',
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update} {delete}', // puedes agregar o quitar botones
+                    'template' => '{view} {update}' . (UserHelper::isAdmin() ? ' {delete}' : ''),
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                                     return Html::a('<i class="fas fa-eye"></i>', $url, [

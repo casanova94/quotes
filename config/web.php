@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$components = require __DIR__ . '/components.php';
 
 $config = [
     'id' => 'basic',
@@ -13,7 +14,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'components' => [
+    'components' => array_merge([
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '4WNRKjClnL7dcK3Zqj2uehjYUGIQlHrp',
@@ -21,9 +22,13 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['site/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -63,7 +68,7 @@ $config = [
             // Ejemplo de zona horaria
             'timeZone' => 'America/Merida',
         ],
-    ],
+    ], $components['components']),
     'params' => $params,
 ];
 

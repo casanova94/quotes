@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\components\helpers\UserHelper;
 
 class SiteController extends Controller
 {
@@ -20,10 +21,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout','index'],
+                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -61,7 +62,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        if (UserHelper::isAdmin()) {
+            return $this->render('index');
+        } else {
+            return $this->render('technician-dashboard');
+        }
     }
 
     /**
@@ -70,10 +79,7 @@ class SiteController extends Controller
      * @return Response|string
      */
     public function actionLogin()
-    {  
-            $this->layout = 'main-login'; // Usar el layout main-login.php
-
-            
+    {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

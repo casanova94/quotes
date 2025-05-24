@@ -23,12 +23,18 @@ class QuotationTemplatesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [            'access' => [
+            [
+                'access' => [
                     'class' => AccessControl::class,
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['@'], // Allow authenticated users
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['delete', 'delete-logo'],
+                            'roles' => ['admin'],
                         ],
                     ],
                 ],
@@ -36,6 +42,7 @@ class QuotationTemplatesController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'delete-logo' => ['POST'],
                     ],
                 ],
             ]

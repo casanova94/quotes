@@ -71,6 +71,12 @@
                                 'icon' => 'cogs',
                                 'url' => ['/services/index'],
                             ],
+                            [
+                                'label' => 'Usuarios',
+                                'icon' => 'users',
+                                'url' => ['/users/index'],
+                                'visible' => Yii::$app->user->can('admin'),
+                            ],
                         ],
                     ],
                 ],

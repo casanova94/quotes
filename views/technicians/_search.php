@@ -18,17 +18,34 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'name') ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'phone') ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'email') ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'user.username')->label('Usuario') ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'phone') ?>
-
-    <?= $form->field($model, 'email') ?>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'user.status')->dropDownList([
+                '' => 'Todos',
+                '10' => 'Activo',
+                '9' => 'Inactivo',
+            ])->label('Estado') ?>
+        </div>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('Limpiar', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

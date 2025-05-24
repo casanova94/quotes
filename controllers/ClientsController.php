@@ -22,15 +22,20 @@ class ClientsController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [               'access' => [
-                'class' => AccessControl::class,
-                'only' => ['*'], 
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'], 
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['delete'],
+                            'roles' => ['admin'],
+                        ],
                     ],
-                ],
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),

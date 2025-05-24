@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\components\helpers\UserHelper;
 
 /** @var yii\web\View $this */
 /** @var app\models\Clients $model */
@@ -13,16 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="clients-view">
 
-
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => '¿Desea eliminar este cliente?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (UserHelper::isAdmin()): ?>
+            <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => '¿Desea eliminar este cliente?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
     </p>
 
     <?= DetailView::widget([

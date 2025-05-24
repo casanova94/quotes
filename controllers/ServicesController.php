@@ -21,12 +21,18 @@ class ServicesController extends Controller
     {
         return array_merge(
             parent::behaviors(),
-            [          'access' => [
+            [
+                'access' => [
                     'class' => AccessControl::class,
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['@'], // Allow authenticated users
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['delete'],
+                            'roles' => ['admin'],
                         ],
                     ],
                 ],
